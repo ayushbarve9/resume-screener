@@ -146,11 +146,20 @@ static_dir_path = os.path.abspath(
 
 @app.get("/")
 def serve_frontend_root():
+    # Try looking in static/ folder first
     index_file = os.path.join(static_dir_path, "index.html")
     if os.path.exists(index_file):
         return FileResponse(index_file)
+        
+    # Fallback: look directly in the root directory
+    root_index = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "index.html")
+    )
+    if os.path.exists(root_index):
+        return FileResponse(root_index)
+        
     return {
         "status": "API is running.",
-        "message": "HTML dashboard frontend file 'static/index.html' not found."
+        "message": "HTML dashboard frontend file 'index.html' not found in static/ or root folder."
     }
 
