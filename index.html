@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATS Resume Screening Dashboard</title>
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: '#f2f6fc',
+                100: '#e1ecf8',
+                200: '#c8dbf2',
+                300: '#a2c1e8',
+                400: '#759edb',
+                500: '#2563eb', // Accent blue
+                600: '#1d4ed8',
+                700: '#1d4ed8',
+              },
+              zinc: {
+                950: '#09090b',
+                900: '#0c0c0f',
+                800: '#1e1e24',
+              }
+            },
+            fontFamily: {
+              sans: ['DM Sans', '-apple-system', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            }
+          }
+        }
+      }
+    </script>
+    
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .glass-card {
+          @apply bg-white/70 dark:bg-zinc-900/60 backdrop-blur-md border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm;
+        }
+        .accent-gradient {
+          @apply bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 dark:from-blue-500 dark:via-indigo-500 dark:to-violet-500;
+        }
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        @apply bg-transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        @apply bg-zinc-300 dark:bg-zinc-700 rounded-full hover:bg-zinc-400 dark:hover:bg-zinc-600;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 font-sans transition-colors duration-200">
+    
+    <!-- 1. Header Bar -->
+    <header className="sticky top-0 z-40 border-b border-zinc-200/60 dark:border-zinc-800/80 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+      <div class="max-w-7xl w-full mx-auto px-6 py-4 flex items-center justify-between border-b border-zinc-200/60 dark:border-zinc-800/80 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-600 text-white text-xl font-bold shadow-md shadow-blue-500/25">
+            🎯
+          </div>
+          <div>
+            <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              ATS Core Evaluation Engine
+            </h1>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400">Production-Grade Resume Selection Dashboard</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-3">
+          <button 
+            id="theme-toggle"
+            class="flex items-center justify-center w-10 h-10 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95"
+            title="Toggle Theme"
+          >
+            <i data-lucide="sun" class="hidden dark:block" size="18"></i>
+            <i data-lucide="moon" class="block dark:hidden" size="18"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. Content Layout Grid -->
+    <div class="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- SIDEBAR COLUMNS -->
+      <aside class="lg:col-span-4 flex flex-col gap-6">
+        
+        <!-- Settings Section -->
+        <div class="glass-card rounded-2xl p-5 flex flex-col gap-4">
+          <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+            <i data-lucide="settings" class="text-blue-500 w-4 h-4"></i> API Settings
+          </h2>
+          
+          <div class="flex flex-col gap-2">
+            <label class="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Gemini API Key</label>
+            <input 
+              id="api-key-input"
+              type="password"
+              placeholder="Environment API Key Active"
+              class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all font-mono"
+            />
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label class="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Intelligence Engine</label>
+            <select 
+              id="model-select"
+              class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all text-zinc-800 dark:text-zinc-200"
+            >
+              <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash-Lite</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 mt-1">
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs font-semibold text-zinc-500 dark:text-zinc-400">High Match</label>
+              <input 
+                id="high-threshold"
+                type="number"
+                value="80"
+                class="w-full text-sm px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 outline-none focus:border-blue-500 text-center font-bold text-zinc-800 dark:text-zinc-200"
+              />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Medium Match</label>
+              <input 
+                id="medium-threshold"
+                type="number"
+                value="60"
+                class="w-full text-sm px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 outline-none focus:border-blue-500 text-center font-bold text-zinc-800 dark:text-zinc-200"
+              />
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between border-t border-zinc-200/50 dark:border-zinc-800/50 pt-3 mt-1">
+            <span class="text-xs text-zinc-500 dark:text-zinc-400 font-semibold">Detailed Debug Mode</span>
+            <button 
+              id="debug-toggle"
+              class="w-10 h-6 rounded-full p-1 transition-colors duration-200 ease-in-out outline-none bg-zinc-300 dark:bg-zinc-800"
+            >
+              <div id="debug-circle" class="bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-200 ease-in-out translate-x-0"></div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Upload Resumes Section -->
+        <div class="glass-card rounded-2xl p-5 flex flex-col gap-4">
+          <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+            <i data-lucide="upload-cloud" class="text-blue-500 w-4 h-4"></i> Upload Candidates
+          </h2>
+          
+          <div 
+            id="drop-zone"
+            class="border-2 border-dashed border-zinc-300 dark:border-zinc-800 rounded-xl p-6 flex flex-col items-center justify-center gap-2 bg-zinc-50/50 dark:bg-zinc-950/20 hover:border-blue-500 hover:bg-zinc-100/50 dark:hover:bg-zinc-900/20 transition-all cursor-pointer group"
+          >
+            <input 
+              id="file-input"
+              type="file" 
+              multiple 
+              class="hidden"
+              accept=".pdf,.docx"
+            />
+            <i data-lucide="upload-cloud" class="text-zinc-400 w-8 h-8 group-hover:text-blue-500 group-hover:scale-110 transition-all duration-200"></i>
+            <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 text-center">
+              Drag & drop files or <span class="text-blue-500 group-hover:underline">browse</span>
+            </span>
+            <span class="text-[10px] text-zinc-400 text-center">PDF, DOCX formats only (Max 10MB)</span>
+          </div>
+
+          <div id="staged-container" class="flex flex-col gap-2 max-h-56 overflow-y-auto hidden">
+            <span class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Staged Profiles (<span id="staged-count">0</span>)</span>
+            <div id="staged-list" class="flex flex-col gap-2"></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN PANEL CONTENT -->
+      <main class="lg:col-span-8 flex flex-col gap-6">
+        
+        <!-- Job Description Input Card -->
+        <div class="glass-card rounded-2xl p-5 flex flex-col gap-4">
+          <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+            <i data-lucide="briefcase" class="text-blue-500 w-4 h-4"></i> Job Specification
+          </h2>
+          <textarea 
+            id="jd-input"
+            class="w-full text-sm px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all font-sans h-44 resize-none"
+            placeholder="Paste job details here..."
+          >Title: Senior Full Stack Engineer (Python & React)
+
+Required Qualifications:
+- 5+ years of Python software development (Django/Flask/FastAPI)
+- Proficient in React, modern JavaScript, and Tailwind CSS
+- Solid database experience with PostgreSQL or MySQL
+- Familiarity with AWS/GCP cloud environments and Docker containers
+- Experience designing and implementing REST APIs</textarea>
+          
+          <button 
+            id="btn-run"
+            class="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 hover:shadow-blue-500/25 transition-all text-white border border-blue-500 bg-blue-600 hover:bg-blue-500 active:scale-95 cursor-pointer"
+          >
+            <i data-lucide="play" class="w-4 h-4" fill="white"></i> Run Screening Assessment
+          </button>
+        </div>
+
+        <!-- Loading State Card -->
+        <div id="loading-card" class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center gap-4 hidden animate-pulse">
+          <i data-lucide="activity" class="text-blue-500 animate-spin w-8 h-8"></i>
+          <div class="w-full max-w-sm bg-zinc-200 dark:bg-zinc-800 rounded-full h-2.5 overflow-hidden">
+            <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300 w-[10%]"></div>
+          </div>
+          <span id="loading-msg" class="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Extracting candidate profiles...</span>
+        </div>
+
+        <!-- Error Panel -->
+        <div id="error-card" class="p-4 rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-700 dark:text-rose-400 flex items-start gap-3 hidden">
+          <i data-lucide="alert-triangle" class="flex-shrink-0 mt-0.5 w-5 h-5"></i>
+          <div class="flex flex-col gap-1">
+            <span class="text-sm font-bold">Screening Assessment Failed</span>
+            <span id="error-msg" class="text-xs opacity-90">An error occurred</span>
+          </div>
+        </div>
+
+        <!-- RESULTS REGION -->
+        <div id="results-region" class="flex flex-col gap-6 hidden">
+          
+          <!-- Caching Indicator -->
+          <div id="cache-indicator" class="p-3 rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center gap-2 text-xs font-semibold hidden">
+            <i data-lucide="layers" class="w-4 h-4"></i> Performance Note: Loaded screening details from evaluation cache.
+          </div>
+
+          <!-- 1. KPI Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="glass-card rounded-2xl p-5 flex flex-col gap-1">
+              <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Profiles Screened</span>
+              <span id="kpi-count" class="text-3xl font-extrabold">0</span>
+            </div>
+            <div class="glass-card rounded-2xl p-5 flex flex-col gap-1">
+              <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Average Match</span>
+              <span id="kpi-avg" class="text-3xl font-extrabold text-blue-600 dark:text-blue-400">0%</span>
+            </div>
+            <div class="glass-card rounded-2xl p-5 flex flex-col gap-1">
+              <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Top Candidate Match</span>
+              <span id="kpi-top" class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">0%</span>
+            </div>
+          </div>
+
+          <!-- 2. Candidate Scoreboard Table -->
+          <div class="glass-card rounded-2xl p-5 flex flex-col gap-4 overflow-x-auto">
+            <h3 class="text-sm font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+              📊 Scoreboard Rankings
+            </h3>
+            
+            <table class="min-w-full text-sm text-left">
+              <thead>
+                <tr class="border-b border-zinc-200 dark:border-zinc-800 text-zinc-400 font-semibold text-xs uppercase tracking-wider">
+                  <th class="py-3 px-2">Candidate Name</th>
+                  <th class="py-3 px-2">Match Score</th>
+                  <th class="py-3 px-2">Top Strength</th>
+                  <th class="py-3 px-2">Critical Gap</th>
+                  <th class="py-3 px-2 text-center">Interview Priority</th>
+                </tr>
+              </thead>
+              <tbody id="scoreboard-body"></tbody>
+            </table>
+          </div>
+
+          <!-- 3. Export Actions -->
+          <div class="grid grid-cols-2 gap-4">
+            <button 
+              id="btn-download-docx"
+              class="py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm font-bold flex items-center justify-center gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 shadow-sm cursor-pointer"
+            >
+              <i data-lucide="file-down" class="w-4 h-4"></i> Export Styled Word Doc (.docx)
+            </button>
+            <button 
+              id="btn-download-md"
+              class="py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm font-bold flex items-center justify-center gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 shadow-sm cursor-pointer"
+            >
+              <i data-lucide="terminal" class="w-4 h-4"></i> Export Markdown File (.md)
+            </button>
+          </div>
+
+          <!-- 4. Comparative Executive Verdict -->
+          <div class="glass-card rounded-2xl p-5 border-l-4 border-emerald-500 flex flex-col gap-4">
+            <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+              <i data-lucide="trophy" class="w-5 h-5"></i>
+              <h3 class="text-sm font-bold uppercase tracking-wider">🏆 Executive Recruitment Verdict</h3>
+            </div>
+            
+            <div class="flex flex-col gap-1">
+              <span class="text-xs text-zinc-500">Top Selected Candidate</span>
+              <span id="winner-name" class="text-lg font-bold text-emerald-600 dark:text-emerald-400">John Doe</span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <span class="text-xs text-zinc-500">Verdict Justification</span>
+              <span id="winner-justification" class="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed"></span>
+            </div>
+
+            <div id="trade-offs-container" class="flex flex-col gap-2 pt-2 border-t border-zinc-200/50 dark:border-zinc-800/50">
+              <span class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Strategic Trade-offs</span>
+              <ul id="trade-offs-list" class="list-disc pl-5 text-xs text-zinc-600 dark:text-zinc-300 flex flex-col gap-1.5"></ul>
+            </div>
+          </div>
+
+          <!-- 5. Detailed Candidate Expanders -->
+          <div class="flex flex-col gap-4">
+            <h3 class="text-sm font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+              👤 Candidate-Specific Detailed Profiles
+            </h3>
+            <div id="expanders-list" class="flex flex-col gap-4"></div>
+          </div>
+
+          <!-- 6. Debug raw JSON response -->
+          <div id="debug-region" class="glass-card rounded-2xl p-5 flex flex-col gap-2 hidden">
+            <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-1">
+              <i data-lucide="terminal" class="w-4 h-4"></i> Raw JSON Response Payload
+            </span>
+            <pre id="debug-json" class="p-3 text-[10px] rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-950/50 overflow-x-auto text-zinc-500 font-mono max-h-56"></pre>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+
+    <!-- CORE VANILLA JS STATE CONTROLLER -->
+    <script>
+      let files = [];
+      let results = null;
+      let activeExpander = null;
+      let detailedMode = false;
+
+      // Theme toggle initialization
+      const themeToggle = document.getElementById('theme-toggle');
+      themeToggle.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+
+      // Load theme preference
+      if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.remove('dark');
+      }
+
+      // Debug mode toggle
+      const debugToggle = document.getElementById('debug-toggle');
+      const debugCircle = document.getElementById('debug-circle');
+      debugToggle.addEventListener('click', () => {
+        detailedMode = !detailedMode;
+        if (detailedMode) {
+          debugToggle.classList.replace('bg-zinc-300', 'bg-blue-600');
+          debugToggle.classList.replace('dark:bg-zinc-800', 'bg-blue-600');
+          debugCircle.classList.replace('translate-x-0', 'translate-x-4');
+          document.getElementById('debug-region')?.classList.remove('hidden');
+          // Show all raw previews
+          document.querySelectorAll('.raw-text-panel').forEach(el => el.classList.remove('hidden'));
+        } else {
+          debugToggle.classList.replace('bg-blue-600', 'bg-zinc-300');
+          debugCircle.classList.replace('translate-x-4', 'translate-x-0');
+          document.getElementById('debug-region')?.classList.add('hidden');
+          // Hide all raw previews
+          document.querySelectorAll('.raw-text-panel').forEach(el => el.classList.add('hidden'));
+        }
+      });
+
+      // Files staging inputs
+      const dropZone = document.getElementById('drop-zone');
+      const fileInput = document.getElementById('file-input');
+      
+      dropZone.addEventListener('click', () => fileInput.click());
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('border-blue-500', 'bg-zinc-100/50', 'dark:bg-zinc-900/20');
+      });
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('border-blue-500', 'bg-zinc-100/50', 'dark:bg-zinc-900/20');
+      });
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-blue-500', 'bg-zinc-100/50', 'dark:bg-zinc-900/20');
+        handleFiles(e.dataTransfer.files);
+      });
+      fileInput.addEventListener('change', (e) => {
+        handleFiles(e.target.files);
+      });
+
+      function handleFiles(uploaded) {
+        const valid = Array.from(uploaded).filter(f => {
+          const ext = f.name.split('.').pop().toLowerCase();
+          return ext === 'pdf' || ext === 'docx';
+        });
+
+        if (files.length + valid.length > 10) {
+          alert("Maximum of 10 resumes can be uploaded.");
+          return;
+        }
+
+        files = [...files, ...valid];
+        renderStagedFiles();
+      }
+
+      function removeFile(index) {
+        files = files.filter((_, i) => i !== index);
+        renderStagedFiles();
+      }
+
+      function renderStagedFiles() {
+        const list = document.getElementById('staged-list');
+        const container = document.getElementById('staged-container');
+        const count = document.getElementById('staged-count');
+        
+        list.innerHTML = '';
+        if (files.length === 0) {
+          container.classList.add('hidden');
+          return;
+        }
+
+        container.classList.remove('hidden');
+        count.textContent = files.length;
+
+        files.forEach((file, idx) => {
+          const row = document.createElement('div');
+          row.className = 'flex items-center justify-between p-2 rounded-lg bg-zinc-100/60 dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800/80';
+          row.innerHTML = `
+            <div class="flex items-center gap-2 truncate">
+              <i data-lucide="file-text" class="text-blue-500 flex-shrink-0 w-4 h-4"></i>
+              <span class="text-xs font-medium truncate">${file.name}</span>
+            </div>
+            <button onclick="removeFile(${idx})" class="p-1 rounded-md text-zinc-400 hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          `;
+          list.appendChild(row);
+        });
+        
+        lucide.createIcons();
+      }
+
+      // Trigger Screen Evaluation
+      const btnRun = document.getElementById('btn-run');
+      btnRun.addEventListener('click', runScreening);
+
+      async function runScreening() {
+        const jd = document.getElementById('jd-input').value;
+        const apiKey = document.getElementById('api-key-input').value;
+        const model = document.getElementById('model-select').value;
+        
+        if (files.length === 0) {
+          showError("Please upload at least one resume profile.");
+          return;
+        }
+        if (!jd.trim()) {
+          showError("Please supply the target job specification.");
+          return;
+        }
+
+        // Setup loading
+        hideError();
+        hideResults();
+        showLoading(true);
+        updateProgress(20, "Extracting candidate profiles...");
+
+        const formData = new FormData();
+        formData.append("job_description", jd);
+        formData.append("model_name", model);
+        if (apiKey.trim()) {
+          formData.append("api_key", apiKey);
+        }
+        files.forEach(f => {
+          formData.append("resumes", f);
+        });
+
+        try {
+          let pVal = 30;
+          const interval = setInterval(() => {
+            if (pVal < 80) {
+              pVal += 10;
+              updateProgress(pVal, "Querying Gemini API screen models...");
+            }
+          }, 1000);
+
+          const response = await fetch('/api/screen', {
+            method: 'POST',
+            body: formData
+          });
+
+          clearInterval(interval);
+          updateProgress(90, "Assembling rankings...");
+
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.detail || "Evaluation run failed.");
+          }
+
+          results = data;
+          showLoading(false);
+          renderResults();
+        } catch (err) {
+          showLoading(false);
+          showError(err.message);
+        }
+      }
+
+      function showLoading(show) {
+        const el = document.getElementById('loading-card');
+        if (show) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      }
+
+      function updateProgress(value, msg) {
+        document.getElementById('progress-bar').style.width = value + '%';
+        document.getElementById('loading-msg').textContent = msg;
+      }
+
+      function showError(msg) {
+        document.getElementById('error-msg').textContent = msg;
+        document.getElementById('error-card').classList.remove('hidden');
+      }
+
+      function hideError() {
+        document.getElementById('error-card').classList.add('hidden');
+      }
+
+      function hideResults() {
+        document.getElementById('results-region').classList.add('hidden');
+      }
+
+      function getBadgeClass(score, high, med) {
+        if (score >= high) return 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400';
+        if (score >= med) return 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400';
+        return 'bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-400';
+      }
+
+      function getScoreText(score, high, med) {
+        if (score >= high) return 'High Match';
+        if (score >= med) return 'Medium Match';
+        return 'Low Match';
+      }
+
+      function renderResults() {
+        const region = document.getElementById('results-region');
+        region.classList.remove('hidden');
+
+        const high = parseInt(document.getElementById('high-threshold').value) || 80;
+        const med = parseInt(document.getElementById('medium-threshold').value) || 60;
+        
+        // Cache indicator
+        const cache = document.getElementById('cache-indicator');
+        if (results.was_cached) cache.classList.remove('hidden');
+        else cache.classList.add('hidden');
+
+        // KPIs
+        const evaluations = results.response.evaluations;
+        document.getElementById('kpi-count').textContent = evaluations.length;
+        
+        const sum = evaluations.reduce((acc, c) => acc + c.match_score, 0);
+        document.getElementById('kpi-avg').textContent = Math.round(sum / evaluations.length) + '%';
+        
+        const top = Math.max(...evaluations.map(e => e.match_score));
+        document.getElementById('kpi-top').textContent = top + '%';
+
+        // Scoreboard
+        const body = document.getElementById('scoreboard-body');
+        body.innerHTML = '';
+        evaluations.forEach((item, idx) => {
+          const rank = results.response.executive_summary.rankings.indexOf(item.candidate_name) + 1;
+          const tr = document.createElement('tr');
+          tr.className = 'border-b border-zinc-100 dark:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/30 transition-colors';
+          tr.innerHTML = `
+            <td class="py-3.5 px-2 font-bold">${item.candidate_name}</td>
+            <td class="py-3.5 px-2">
+              <span class="px-2 py-1 rounded-md text-xs font-bold border ${getBadgeClass(item.match_score, high, med)}">
+                ${item.match_score}% (${getScoreText(item.match_score, high, med)})
+              </span>
+            </td>
+            <td class="py-3.5 px-2 text-zinc-600 dark:text-zinc-300 max-w-xs truncate">${item.strengths[0] || 'N/A'}</td>
+            <td class="py-3.5 px-2 text-zinc-600 dark:text-zinc-300 max-w-xs truncate">${item.gaps[0] || 'N/A'}</td>
+            <td class="py-3.5 px-2 text-center">
+              <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs font-bold font-mono">
+                Rank ${rank > 0 ? rank : idx + 1}
+              </span>
+            </td>
+          `;
+          body.appendChild(tr);
+        });
+
+        // Executive Summary
+        const summary = results.response.executive_summary;
+        document.getElementById('winner-name').textContent = summary.winner_name || 'N/A';
+        document.getElementById('winner-justification').textContent = summary.justification;
+
+        const tradeList = document.getElementById('trade-offs-list');
+        const tradeContainer = document.getElementById('trade-offs-container');
+        tradeList.innerHTML = '';
+        if (summary.trade_offs.length === 0) {
+          tradeContainer.classList.add('hidden');
+        } else {
+          tradeContainer.classList.remove('hidden');
+          summary.trade_offs.forEach(to => {
+            const li = document.createElement('li');
+            li.textContent = to;
+            tradeList.appendChild(li);
+          });
+        }
+
+        // Expanders
+        renderExpanders(high, med);
+
+        // Debug json
+        document.getElementById('debug-json').textContent = JSON.stringify(results.response, null, 2);
+        
+        lucide.createIcons();
+      }
+
+      function renderExpanders(high, med) {
+        const container = document.getElementById('expanders-list');
+        container.innerHTML = '';
+
+        results.response.evaluations.forEach((item, idx) => {
+          const meta = results.metadata[item.candidate_name] || {};
+          const div = document.createElement('div');
+          div.className = 'glass-card rounded-2xl overflow-hidden';
+          
+          div.innerHTML = `
+            <button onclick="toggleExpander(${idx})" class="w-full px-5 py-4 flex items-center justify-between bg-zinc-100/40 dark:bg-zinc-900/30 text-left outline-none border-b border-zinc-200/40 dark:border-zinc-800/40 cursor-pointer">
+              <div class="flex items-center gap-3">
+                <i data-lucide="user" class="text-blue-500 w-4 h-4"></i>
+                <span class="font-bold">${item.candidate_name}</span>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold border ${getBadgeClass(item.match_score, high, med)}">
+                  Score: ${item.match_score}%
+                </span>
+              </div>
+              <i data-lucide="chevron-down" id="chevron-${idx}" class="w-4 h-4"></i>
+            </button>
+            
+            <div id="content-${idx}" class="hidden p-5 flex flex-col gap-4">
+              <div class="grid grid-cols-3 gap-2 border-b border-zinc-200/40 dark:border-zinc-800/40 pb-3 text-xs text-zinc-400">
+                <span>📄 Page Count: ${meta.page_count || 1}</span>
+                <span>📷 Scanned PDF: ${meta.is_scanned ? 'Yes 📷' : 'No 📝'}</span>
+                <span>🔍 Quality Index: ${(meta.confidence_score || 1.0).toFixed(2)}</span>
+              </div>
+
+              <!-- Navigation pill tabs -->
+              <div class="flex gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-2">
+                <button onclick="setExpanderTab(${idx}, 0)" id="tab-${idx}-0" class="tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950">
+                  📊 Overview
+                </button>
+                <button onclick="setExpanderTab(${idx}, 1)" id="tab-${idx}-1" class="tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-transparent text-zinc-400 hover:text-zinc-600">
+                  🗣️ Interview Qs
+                </button>
+                <button onclick="setExpanderTab(${idx}, 2)" id="tab-${idx}-2" class="tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-transparent text-zinc-400 hover:text-zinc-600">
+                  🛠️ Revisions
+                </button>
+              </div>
+
+              <!-- Tab layouts -->
+              <div id="tab-content-${idx}" class="text-sm">
+                <!-- Loaded dynamically below -->
+              </div>
+
+              <!-- Raw code logs -->
+              <div class="raw-text-panel mt-4 pt-4 border-t border-zinc-200/50 dark:border-zinc-800/50 ${detailedMode ? '' : 'hidden'}">
+                <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-1">
+                  <i data-lucide="terminal" class="w-3 h-3"></i> Raw Extracted Text Payload
+                </span>
+                <pre class="mt-2 p-3 text-[10px] rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-950/50 overflow-x-auto text-zinc-500 font-mono whitespace-pre-wrap max-h-48">${meta.text || ''}</pre>
+              </div>
+            </div>
+          `;
+          container.appendChild(div);
+          
+          // Initialise tab content
+          setExpanderTab(idx, 0);
+        });
+      }
+
+      function toggleExpander(idx) {
+        const panel = document.getElementById(`content-${idx}`);
+        const chevron = document.getElementById(`chevron-${idx}`);
+        const show = panel.classList.contains('hidden');
+        
+        // Collapse active
+        if (activeExpander !== null && activeExpander !== idx) {
+          document.getElementById(`content-${activeExpander}`).classList.add('hidden');
+          document.getElementById(`chevron-${activeExpander}`).classList.replace('chevron-up', 'chevron-down');
+        }
+
+        if (show) {
+          panel.classList.remove('hidden');
+          chevron.classList.replace('chevron-down', 'chevron-up');
+          activeExpander = idx;
+        } else {
+          panel.classList.add('hidden');
+          chevron.classList.replace('chevron-up', 'chevron-down');
+          activeExpander = null;
+        }
+        lucide.createIcons();
+      }
+
+      function setExpanderTab(idx, tabIdx) {
+        const evaluations = results.response.evaluations[idx];
+        const tabContent = document.getElementById(`tab-content-${idx}`);
+        
+        // Toggle buttons active borders
+        document.querySelectorAll(`.tab-btn-${idx}`).forEach(btn => {
+          btn.className = `tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-transparent text-zinc-400 hover:text-zinc-600 cursor-pointer`;
+        });
+        const activeBtn = document.getElementById(`tab-${idx}-${tabIdx}`);
+        activeBtn.className = `tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 cursor-pointer`;
+
+        if (tabIdx === 0) {
+          tabContent.innerHTML = `
+            <div class="flex flex-col gap-4">
+              <p class="text-zinc-700 dark:text-zinc-300 italic">"${evaluations.gap_analysis}"</p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex flex-col gap-2">
+                  <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">✅ Primary Strengths</span>
+                  <ul class="list-disc pl-5 flex flex-col gap-1 text-xs">
+                    ${evaluations.strengths.map(s => `<li>${s}</li>`).join('')}
+                  </ul>
+                </div>
+                <div class="flex flex-col gap-2">
+                  <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">⚠️ Identified Gaps</span>
+                  <ul class="list-disc pl-5 flex flex-col gap-1 text-xs">
+                    ${evaluations.gaps.map(g => `<li>${g}</li>`).join('')}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (tabIdx === 1) {
+          tabContent.innerHTML = `
+            <div class="flex flex-col gap-3">
+              <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">🗣️ Targeted Interview Questions</span>
+              ${evaluations.interview_questions.map((q, qIdx) => `
+                <div class="p-3 rounded-lg border border-zinc-200/50 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-950">
+                  <span class="text-xs font-bold text-blue-500">Question ${qIdx + 1}:</span>
+                  <p class="text-xs text-zinc-600 dark:text-zinc-300 mt-1 font-semibold">${q}</p>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        } else if (tabIdx === 2) {
+          tabContent.innerHTML = `
+            <div class="flex flex-col gap-2">
+              <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">🛠️ Resume Revision Suggestions</span>
+              <ul class="list-disc pl-5 flex flex-col gap-1.5 text-xs text-zinc-700 dark:text-zinc-300">
+                ${evaluations.resume_revisions.map(r => `<li>${r}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        }
+      }
+
+      // Download Word doc report
+      document.getElementById('btn-download-docx').addEventListener('click', async () => {
+        if (!results) return;
+        const jd = document.getElementById('jd-input').value;
+        const title = jd.split('\n')[0] || "ATS Comparative Assessment";
+        
+        const formData = new FormData();
+        formData.append("job_title", title);
+        formData.append("screening_response_json", JSON.stringify(results.response));
+
+        try {
+          const res = await fetch('/api/export/docx', {
+            method: 'POST',
+            body: formData
+          });
+
+          if (!res.ok) throw new Error("Export failed");
+          
+          const blob = await res.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'ATS_Evaluation_Report.docx';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        } catch (e) {
+          alert("Docx export failed: " + e.message);
+        }
+      });
+
+      // Download Markdown report
+      document.getElementById('btn-download-md').addEventListener('click', () => {
+        if (!results) return;
+        const mdText = generateMarkdownReport(results.response);
+        const blob = new Blob([mdText], { type: 'text/markdown' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'ATS_Evaluation_Report.md';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      });
+
+      function generateMarkdownReport(response) {
+        const md = [];
+        md.push("# Candidate Recruitment Assessment Report");
+        md.push(`*Generated on: ${new Date().toISOString()}*\n`);
+        md.push("## 🏆 Executive Verdict & Selection Summaries\n");
+        md.push(`**Top Recommended Candidate**: \`${response.executive_summary.winner_name}\`\n`);
+        md.push(`**Justification**: ${response.executive_summary.justification}\n`);
+        if (response.executive_summary.trade_offs.length > 0) {
+          md.push("### Key Trade-offs & Comparisons");
+          response.executive_summary.trade_offs.forEach(t => md.push(`- ${t}`));
+          md.push("");
+        }
+        md.push("### Ranking Scoreboard");
+        md.push("| Rank | Candidate Name | ATS Match Score |");
+        md.push("|---|---|---|");
+        response.executive_summary.rankings.forEach((name, idx) => {
+          const item = response.evaluations.find(e => e.candidate_name.toLowerCase() === name.toLowerCase());
+          md.push(`| ${idx + 1} | ${name} | ${item ? item.match_score : 'N/A'}/100 |`);
+        });
+        md.push("\n---\n");
+        md.push("## 👤 Detailed Candidate Profiles");
+        response.evaluations.forEach(c => {
+          md.push(`### Candidate: ${c.candidate_name}`);
+          md.push(`- **Target Position**: ${c.target_position}`);
+          md.push(`- **Match Score**: \`${c.match_score}/100\`\n`);
+          md.push(`**Evaluation Summary**: ${c.gap_analysis}\n`);
+          md.push("#### Strengths");
+          c.strengths.forEach(s => md.push(`- ${s}`));
+          md.push("");
+          md.push("#### Identified Gaps");
+          c.gaps.forEach(g => md.push(`- ${g}`));
+          md.push("");
+          md.push("#### Targeted Interview Questions");
+          c.interview_questions.forEach(q => md.push(`- ${q}`));
+          md.push("");
+          md.push("#### Recommended Revisions");
+          c.resume_revisions.forEach(r => md.push(`- ${r}`));
+          md.push("\n---\n");
+        });
+        return md.join("\n");
+      }
+
+      // Initialize icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
