@@ -66,6 +66,19 @@
       ::-webkit-scrollbar-thumb {
         @apply bg-zinc-300 dark:bg-zinc-700 rounded-full hover:bg-zinc-400 dark:hover:bg-zinc-600;
       }
+      @media print {
+        header, aside, #btn-run, #staged-container, .grid-cols-2 {
+          display: none !important;
+        }
+        main {
+          width: 100% !important;
+          max-width: 100% !important;
+          grid-column: span 12 / span 12 !important;
+        }
+        div[id^="content-"] {
+          display: block !important;
+        }
+      }
     </style>
   </head>
   <body class="min-h-screen flex flex-col bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 font-sans transition-colors duration-200">
@@ -157,7 +170,7 @@
             <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 text-center">
               Drag & drop files or <span class="text-blue-500 group-hover:underline">browse</span>
             </span>
-            <span class="text-[10px] text-zinc-400 text-center">PDF, DOCX formats only (Max 100MB)</span>
+            <span class="text-[10px] text-zinc-400 text-center">Supports PDF & Word (.docx) documents up to 100MB</span>
           </div>
 
           <div id="staged-container" class="flex flex-col gap-2 max-h-56 overflow-y-auto hidden">
@@ -185,7 +198,7 @@
             id="btn-run"
             class="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 hover:shadow-blue-500/25 transition-all text-white border border-blue-500 bg-blue-600 hover:bg-blue-500 active:scale-95 cursor-pointer"
           >
-            <i data-lucide="play" class="w-4 h-4" fill="white"></i> Run Screening Assessment
+            <i data-lucide="play" class="w-4 h-4" fill="white"></i> CHECK RESUME
           </button>
         </div>
 
@@ -202,7 +215,7 @@
         <div id="error-card" class="p-4 rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-700 dark:text-rose-400 flex items-start gap-3 hidden">
           <i data-lucide="alert-triangle" class="flex-shrink-0 mt-0.5 w-5 h-5"></i>
           <div class="flex flex-col gap-1">
-            <span class="text-sm font-bold">Screening Assessment Failed</span>
+            <span class="text-sm font-bold">Check Resume Failed</span>
             <span id="error-msg" class="text-xs opacity-90">An error occurred</span>
           </div>
         </div>
@@ -260,10 +273,10 @@
               <i data-lucide="file-down" class="w-4 h-4"></i> Export Styled Word Doc (.docx)
             </button>
             <button 
-              id="btn-download-md"
+              id="btn-download-pdf"
               class="py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm font-bold flex items-center justify-center gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 shadow-sm cursor-pointer"
             >
-              <i data-lucide="terminal" class="w-4 h-4"></i> Export Markdown File (.md)
+              <i data-lucide="printer" class="w-4 h-4"></i> Export Report as PDF (.pdf)
             </button>
           </div>
 
@@ -737,61 +750,10 @@
         }
       });
 
-      // Download Markdown report
-      document.getElementById('btn-download-md').addEventListener('click', () => {
-        if (!results) return;
-        const mdText = generateMarkdownReport(results.response);
-        const blob = new Blob([mdText], { type: 'text/markdown' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'ATS_Evaluation_Report.md';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
+      // Trigger PDF Export/Printing
+      document.getElementById('btn-download-pdf').addEventListener('click', () => {
+        window.print();
       });
-
-      function generateMarkdownReport(response) {
-        const md = [];
-        md.push("# Candidate Recruitment Assessment Report");
-        md.push(`*Generated on: ${new Date().toISOString()}*\n`);
-        md.push("## 🏆 Executive Verdict & Selection Summaries\n");
-        md.push(`**Top Recommended Candidate**: \`${response.executive_summary.winner_name}\`\n`);
-        md.push(`**Justification**: ${response.executive_summary.justification}\n`);
-        if (response.executive_summary.trade_offs.length > 0) {
-          md.push("### Key Trade-offs & Comparisons");
-          response.executive_summary.trade_offs.forEach(t => md.push(`- ${t}`));
-          md.push("");
-        }
-        md.push("### Ranking Scoreboard");
-        md.push("| Rank | Candidate Name | ATS Match Score |");
-        md.push("|---|---|---|");
-        response.executive_summary.rankings.forEach((name, idx) => {
-          const item = response.evaluations.find(e => e.candidate_name.toLowerCase() === name.toLowerCase());
-          md.push(`| ${idx + 1} | ${name} | ${item ? item.match_score : 'N/A'}/100 |`);
-        });
-        md.push("\n---\n");
-        md.push("## 👤 Detailed Candidate Profiles");
-        response.evaluations.forEach(c => {
-          md.push(`### Candidate: ${c.candidate_name}`);
-          md.push(`- **Target Position**: ${c.target_position}`);
-          md.push(`- **Match Score**: \`${c.match_score}/100\`\n`);
-          md.push(`**Evaluation Summary**: ${c.gap_analysis}\n`);
-          md.push("#### Strengths");
-          c.strengths.forEach(s => md.push(`- ${s}`));
-          md.push("");
-          md.push("#### Identified Gaps");
-          c.gaps.forEach(g => md.push(`- ${g}`));
-          md.push("");
-          md.push("#### Targeted Interview Questions");
-          c.interview_questions.forEach(q => md.push(`- ${q}`));
-          md.push("");
-          md.push("#### Recommended Revisions");
-          c.resume_revisions.forEach(r => md.push(`- ${r}`));
-          md.push("\n---\n");
-        });
-        return md.join("\n");
-      }
 
       // Initialize icons
       lucide.createIcons();
