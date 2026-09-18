@@ -4,7 +4,7 @@
 import os
 import json
 from typing import List, Optional
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Response
 from fastapi.responses import StreamingResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -17,10 +17,10 @@ from config import DEFAULT_MODELS, DEFAULT_THRESHOLDS
 
 app = FastAPI(
     title="AI Resume Screening Dashboard API",
-    description="Backend API serving the React candidate evaluation engine."
+    description="Backend API serving the candidate evaluation engine."
 )
 
-# Enable CORS for development environments (Vite local dev server port 5173)
+# Enable CORS for development environments
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -28,6 +28,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    """Silence browser 404 requests for favicon.ico."""
+    return Response(status_code=204)
 
 @app.get("/api/config")
 async def get_app_config():
@@ -47,6 +52,12 @@ async def screen_resumes(
     resumes: List[UploadFile] = File(...)
 ):
     """Process uploaded resumes, extract text, call Gemini, and return candidate scores."""
+    if not job_description or not job_description.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="Job description cannot be empty."
+        )
+
     # Retrieve API Key from env if not provided
     effective_api_key = api_key.strip() if api_key and api_key.strip() else (
         os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
