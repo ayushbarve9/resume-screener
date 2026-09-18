@@ -48,16 +48,9 @@ async def screen_resumes(
 ):
     """Process uploaded resumes, extract text, call Gemini, and return candidate scores."""
     # Retrieve API Key from env if not provided
-    effective_api_key = api_key if api_key and api_key.strip() else (
+    effective_api_key = api_key.strip() if api_key and api_key.strip() else (
         os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
     )
-    
-    if not effective_api_key:
-        raise HTTPException(
-            status_code=400,
-            detail="Google Gemini API key is missing. Please provide it in the UI settings or set GOOGLE_API_KEY in the environment."
-        )
-
 
     if not resumes:
         raise HTTPException(
@@ -103,9 +96,9 @@ async def screen_resumes(
             detail=f"Failed to parse text from any uploaded files. Errors: {json.dumps(extraction_errors)}"
         )
 
-    # 2. Evaluation phase via Gemini API
+    # 2. Evaluation phase via Gemini API or Built-in ATS Engine
     try:
-        screening_res, was_cached = evaluate_candidates(
+        screening_res, was_cached, engine_used = evaluate_candidates(
             api_key=effective_api_key,
             model_name=model_name,
             job_description=job_description,
@@ -116,6 +109,8 @@ async def screen_resumes(
             "success": True,
             "response": screening_res.model_dump(),
             "was_cached": was_cached,
+            "engine_used": engine_used,
+            "has_api_key": bool(effective_api_key),
             "metadata": metadata_map,
             "warnings": extraction_errors
         }

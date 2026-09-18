@@ -121,6 +121,12 @@ def extract_text_cached(file_bytes: bytes, filename: str) -> dict:
             text, page_count, is_scanned, confidence = extract_pdf_text_internal(file_bytes)
         elif ext == "docx":
             text, page_count, is_scanned, confidence = extract_docx_text_internal(file_bytes)
+        elif ext in ["txt", "text", "md"]:
+            raw_text = file_bytes.decode("utf-8", errors="ignore")
+            text = normalize_text(raw_text)
+            page_count = max(1, len(text) // 2200 + 1)
+            is_scanned = False
+            confidence = 1.0
         else:
             return {
                 "filename": filename,
@@ -128,7 +134,7 @@ def extract_text_cached(file_bytes: bytes, filename: str) -> dict:
                 "page_count": 0,
                 "is_scanned": False,
                 "confidence_score": 0.0,
-                "error_message": f"Unsupported file format: '.{ext}'"
+                "error_message": f"Unsupported file format: '.{ext}'. Supported formats: .pdf, .docx, .txt"
             }
             
         return {
