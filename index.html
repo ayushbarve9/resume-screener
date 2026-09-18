@@ -262,6 +262,70 @@
           </div>
         </div>
 
+        <!-- Engine Specifications -->
+        <div class="card rounded-xl p-5 flex flex-col gap-3.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+              System Specifications
+            </span>
+            <span class="inline-flex items-center gap-1.5 text-[11px] font-mono text-emerald-600 dark:text-emerald-400">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Ready
+            </span>
+          </div>
+
+          <div class="flex flex-col gap-2.5 text-xs">
+            <div class="flex items-center justify-between py-1.5 border-b border-slate-100 dark:border-zinc-850">
+              <span class="text-slate-500 dark:text-zinc-400 flex items-center gap-1.5">
+                <i data-lucide="database" class="w-3.5 h-3.5 text-slate-400"></i> Parser
+              </span>
+              <span class="font-mono text-[11px] text-slate-700 dark:text-zinc-300">pypdf • docx • utf8</span>
+            </div>
+            <div class="flex items-center justify-between py-1.5 border-b border-slate-100 dark:border-zinc-850">
+              <span class="text-slate-500 dark:text-zinc-400 flex items-center gap-1.5">
+                <i data-lucide="zap" class="w-3.5 h-3.5 text-slate-400"></i> Engine
+              </span>
+              <span class="font-mono text-[11px] text-slate-700 dark:text-zinc-300">Gemini LLM / Heuristic</span>
+            </div>
+            <div class="flex items-center justify-between py-1.5 border-b border-slate-100 dark:border-zinc-850">
+              <span class="text-slate-500 dark:text-zinc-400 flex items-center gap-1.5">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-slate-400"></i> Privacy
+              </span>
+              <span class="font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">Zero Disk Retention</span>
+            </div>
+            <div class="flex items-center justify-between py-1.5">
+              <span class="text-slate-500 dark:text-zinc-400 flex items-center gap-1.5">
+                <i data-lucide="users" class="w-3.5 h-3.5 text-slate-400"></i> Concurrency
+              </span>
+              <span class="font-mono text-[11px] text-slate-700 dark:text-zinc-300">Up to 10 Resumes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screening Guidelines -->
+        <div class="card rounded-xl p-5 flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+              Screening Guidelines
+            </span>
+            <i data-lucide="info" class="w-3.5 h-3.5 text-slate-400"></i>
+          </div>
+
+          <div class="flex flex-col gap-2 text-[11px] text-slate-600 dark:text-zinc-400 leading-relaxed">
+            <div class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+              <span>Include non-negotiable tech stack and experience levels in the JD.</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+              <span>Text-based PDFs and Word documents deliver optimal parsing accuracy.</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+              <span>Adjust high/moderate threshold sliders to dynamically re-tier applicants.</span>
+            </div>
+          </div>
+        </div>
+
       </aside>
 
       <!-- MAIN WORKSPACE CONTENT (Column span: 8) -->
@@ -307,6 +371,166 @@
               <i data-lucide="x" class="w-4 h-4"></i>
             </button>
           </div>
+        </div>
+
+        <!-- INITIAL IDLE DASHBOARD OVERVIEW -->
+        <div id="initial-overview" class="flex flex-col gap-6">
+          
+          <!-- Section 1: Evaluation Pipeline (3 Stages) -->
+          <div class="flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                Evaluation Pipeline
+              </span>
+              <span class="text-[11px] font-mono text-slate-400">Automated 3-Stage Screening</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+              <!-- Stage 1 -->
+              <div class="card rounded-xl p-4 flex flex-col justify-between gap-3">
+                <div class="flex items-center justify-between">
+                  <div class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-zinc-850 flex items-center justify-center text-slate-700 dark:text-zinc-200">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                  </div>
+                  <span class="text-[11px] font-mono text-slate-400 font-semibold">STAGE 01</span>
+                </div>
+                <div>
+                  <h4 class="text-xs font-semibold text-slate-900 dark:text-white mb-1">Document Ingestion</h4>
+                  <p class="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
+                    Extracts structured experience, skills, and certifications from PDF, Word, and text files.
+                  </p>
+                </div>
+                <div class="flex flex-wrap gap-1 pt-2 border-t border-slate-100 dark:border-zinc-850/80">
+                  <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-850 text-slate-500 dark:text-zinc-400">OCR Parsing</span>
+                  <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-850 text-slate-500 dark:text-zinc-400">Normalization</span>
+                </div>
+              </div>
+
+              <!-- Stage 2 -->
+              <div class="card rounded-xl p-4 flex flex-col justify-between gap-3">
+                <div class="flex items-center justify-between">
+                  <div class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-zinc-850 flex items-center justify-center text-slate-700 dark:text-zinc-200">
+                    <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+                  </div>
+                  <span class="text-[11px] font-mono text-slate-400 font-semibold">STAGE 02</span>
+                </div>
+                <div>
+                  <h4 class="text-xs font-semibold text-slate-900 dark:text-white mb-1">Semantic Alignment</h4>
+                  <p class="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
+                    Evaluates contextual depth, domain proficiency, and core qualifications against requirements.
+                  </p>
+                </div>
+                <div class="flex flex-wrap gap-1 pt-2 border-t border-slate-100 dark:border-zinc-850/80">
+                  <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-850 text-slate-500 dark:text-zinc-400">Weighted Fit</span>
+                  <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-850 text-slate-500 dark:text-zinc-400">Heuristics</span>
+                </div>
+              </div>
+
+              <!-- Stage 3 -->
+              <div class="card rounded-xl p-4 flex flex-col justify-between gap-3">
+                <div class="flex items-center justify-between">
+                  <div class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-zinc-850 flex items-center justify-center text-slate-700 dark:text-zinc-200">
+                    <i data-lucide="target" class="w-3.5 h-3.5"></i>
+                  </div>
+                  <span class="text-[11px] font-mono text-slate-400 font-semibold">STAGE 03</span>
+                </div>
+                <div>
+                  <h4 class="text-xs font-semibold text-slate-900 dark:text-white mb-1">Executive Synthesis</h4>
+                  <p class="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
+                    Surfaces missing competencies, candidate red flags, tailored interview probes, and verdict.
+                  </p>
+                </div>
+                <div class="flex flex-wrap gap-1 pt-2 border-t border-slate-100 dark:border-zinc-850/80">
+                  <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-850 text-slate-500 dark:text-zinc-400">Gap Report</span>
+                  <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-850 text-slate-500 dark:text-zinc-400">Interview Qs</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Assessment Capabilities Matrix (2x2 Grid) -->
+          <div class="flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                Screening Intelligence
+              </span>
+              <span class="text-[11px] font-mono text-slate-400">Output Artifacts</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <!-- Feature 1 -->
+              <div class="card rounded-xl p-4 flex items-start gap-3.5">
+                <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-zinc-850 flex items-center justify-center flex-shrink-0 text-slate-700 dark:text-zinc-200 mt-0.5">
+                  <i data-lucide="award" class="w-4 h-4 text-emerald-500"></i>
+                </div>
+                <div class="flex flex-col gap-1 min-w-0">
+                  <span class="text-xs font-semibold text-slate-900 dark:text-white">Executive Verdict & Trade-offs</span>
+                  <p class="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
+                    Identifies the overall top candidate with clear hiring rationales and strategic comparative analysis across applicants.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Feature 2 -->
+              <div class="card rounded-xl p-4 flex items-start gap-3.5">
+                <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-zinc-850 flex items-center justify-center flex-shrink-0 text-slate-700 dark:text-zinc-200 mt-0.5">
+                  <i data-lucide="alert-circle" class="w-4 h-4 text-amber-500"></i>
+                </div>
+                <div class="flex flex-col gap-1 min-w-0">
+                  <span class="text-xs font-semibold text-slate-900 dark:text-white">Objective Gap Identification</span>
+                  <p class="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
+                    Highlights critical missing competencies, absent tools, and experience shortfalls before scheduling interviews.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Feature 3 -->
+              <div class="card rounded-xl p-4 flex items-start gap-3.5">
+                <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-zinc-850 flex items-center justify-center flex-shrink-0 text-slate-700 dark:text-zinc-200 mt-0.5">
+                  <i data-lucide="help-circle" class="w-4 h-4 text-blue-500"></i>
+                </div>
+                <div class="flex flex-col gap-1 min-w-0">
+                  <span class="text-xs font-semibold text-slate-900 dark:text-white">Targeted Interview Probing</span>
+                  <p class="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
+                    Generates tailored interview questions mapped specifically to each candidate's identified skill gaps.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Feature 4 -->
+              <div class="card rounded-xl p-4 flex items-start gap-3.5">
+                <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-zinc-850 flex items-center justify-center flex-shrink-0 text-slate-700 dark:text-zinc-200 mt-0.5">
+                  <i data-lucide="columns" class="w-4 h-4 text-purple-500"></i>
+                </div>
+                <div class="flex flex-col gap-1 min-w-0">
+                  <span class="text-xs font-semibold text-slate-900 dark:text-white">Head-to-Head Comparison</span>
+                  <p class="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
+                    Modal comparison matrix lets recruiters evaluate two finalists side-by-side across all dimension scores.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Readiness Status Bar -->
+          <div class="card rounded-xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 bg-slate-50/50 dark:bg-zinc-950/40">
+            <div class="flex items-center gap-2.5">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span class="text-xs text-slate-600 dark:text-zinc-400">
+                Screening Engine Ready &bull; Awaiting resumes and target job description
+              </span>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] font-mono text-slate-400">
+              <span>Shortcut:</span>
+              <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 text-[10px]">Ctrl</kbd>
+              <span>+</span>
+              <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 text-[10px]">Enter</kbd>
+            </div>
+          </div>
+
         </div>
 
         <!-- Loading State Card -->
@@ -486,6 +710,24 @@
 
       </main>
     </div>
+
+    <!-- Enterprise System Footer -->
+    <footer class="mt-auto border-t border-slate-200 dark:border-zinc-800/80 py-4 px-4 sm:px-6 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-sm text-xs text-slate-500 dark:text-zinc-500">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span class="font-medium text-slate-700 dark:text-zinc-300">ResumeScreen</span>
+          <span>&bull;</span>
+          <span>Autonomous Candidate Screening & Semantic Qualification Matrix</span>
+        </div>
+        <div class="flex items-center gap-4 text-[11px] font-mono text-slate-400 dark:text-zinc-500">
+          <span class="inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Engine Active</span>
+          <span>&bull;</span>
+          <span>In-Memory Volatile Processing</span>
+          <span>&bull;</span>
+          <span>Zero External Storage</span>
+        </div>
+      </div>
+    </footer>
 
     <!-- 3. Side-by-Side Candidate Comparison Modal -->
     <div id="compare-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden">
@@ -971,8 +1213,13 @@
 
       function showLoading(show) {
         const el = document.getElementById('loading-card');
-        if (show) el.classList.remove('hidden');
-        else el.classList.add('hidden');
+        const initial = document.getElementById('initial-overview');
+        if (show) {
+          el.classList.remove('hidden');
+          if (initial) initial.classList.add('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
       }
 
       function updateProgress(value, msg) {
@@ -984,6 +1231,8 @@
       function showError(msg) {
         document.getElementById('error-msg').textContent = msg;
         document.getElementById('error-card').classList.remove('hidden');
+        const initial = document.getElementById('initial-overview');
+        if (!results && initial) initial.classList.remove('hidden');
       }
 
       function hideError() {
@@ -992,6 +1241,8 @@
 
       function hideResults() {
         document.getElementById('results-region').classList.add('hidden');
+        const initial = document.getElementById('initial-overview');
+        if (!results && initial) initial.classList.remove('hidden');
       }
 
       function getBadgeClass(score, high, med) {
@@ -1001,6 +1252,8 @@
       }
 
       function renderResults() {
+        const initial = document.getElementById('initial-overview');
+        if (initial) initial.classList.add('hidden');
         const region = document.getElementById('results-region');
         region.classList.remove('hidden');
 
