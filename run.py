@@ -47,9 +47,10 @@ def main():
     log("Dashboard will be available at: http://localhost:8000")
     
     try:
-        # Run uvicorn server (relative import paths must match backend.main:app)
+        # Run uvicorn server
+        app_target = "backend.main:app" if os.path.exists(os.path.join(os.path.dirname(__file__), "backend", "main.py")) else "main:app"
         subprocess.run([
-            python_exe, "-m", "uvicorn", "backend.main:app", 
+            python_exe, "-m", "uvicorn", app_target, 
             "--host", "127.0.0.1", "--port", "8000", "--reload"
         ])
     except KeyboardInterrupt:
