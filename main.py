@@ -13,6 +13,7 @@ from models import ScreeningResponse
 from extractors import extract_resume
 from evaluator import evaluate_candidates
 from report_generator import generate_docx_report
+from config import DEFAULT_MODELS, DEFAULT_THRESHOLDS
 
 app = FastAPI(
     title="AI Resume Screening Dashboard API",
@@ -27,6 +28,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/api/config")
+async def get_app_config():
+    """Returns available models, thresholds, and whether an environment API key is configured."""
+    has_env_key = bool(os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY"))
+    return {
+        "has_env_key": has_env_key,
+        "models": DEFAULT_MODELS,
+        "thresholds": DEFAULT_THRESHOLDS
+    }
 
 @app.post("/api/screen")
 async def screen_resumes(

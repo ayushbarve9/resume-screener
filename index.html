@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ATS Resume Screening Dashboard</title>
+    <title>AI Resume Screening Dashboard | TalentPulse Pro</title>
     
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,7 +11,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -22,25 +22,35 @@
         theme: {
           extend: {
             colors: {
-              primary: {
-                50: '#f2f6fc',
-                100: '#e1ecf8',
-                200: '#c8dbf2',
-                300: '#a2c1e8',
-                400: '#759edb',
-                500: '#2563eb', // Accent blue
-                600: '#1d4ed8',
-                700: '#1d4ed8',
+              brand: {
+                50: '#eef6ff',
+                100: '#d9ebff',
+                200: '#bcdeff',
+                300: '#8ec9ff',
+                400: '#58a9ff',
+                500: '#2f82ff',
+                600: '#1a62f5',
+                700: '#144de1',
+                800: '#173eb6',
+                900: '#18388f',
+                950: '#122357',
               },
-              zinc: {
-                950: '#09090b',
-                900: '#0c0c0f',
-                800: '#1e1e24',
+              slate: {
+                850: '#10172a',
+                900: '#0b0f19',
+                950: '#070a12',
               }
             },
             fontFamily: {
-              sans: ['DM Sans', '-apple-system', 'sans-serif'],
-              mono: ['JetBrains Mono', 'monospace'],
+              sans: ['"Plus Jakarta Sans"', '-apple-system', 'sans-serif'],
+              display: ['Outfit', '-apple-system', 'sans-serif'],
+              mono: ['"JetBrains Mono"', 'monospace'],
+            },
+            boxShadow: {
+              'glow-blue': '0 0 25px -5px rgba(59, 130, 246, 0.3)',
+              'glow-emerald': '0 0 25px -5px rgba(16, 185, 129, 0.3)',
+              'glow-purple': '0 0 25px -5px rgba(147, 51, 234, 0.3)',
+              'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.25)',
             }
           }
         }
@@ -49,25 +59,72 @@
     
     <style type="text/tailwindcss">
       @layer utilities {
-        .glass-card {
-          @apply bg-white/70 dark:bg-zinc-900/60 backdrop-blur-md border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm;
+        .glass-panel {
+          @apply bg-white/80 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 shadow-glass;
         }
-        .accent-gradient {
-          @apply bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 dark:from-blue-500 dark:via-indigo-500 dark:to-violet-500;
+        .glass-subtle {
+          @apply bg-slate-100/70 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/40;
+        }
+        .gradient-text {
+          @apply bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 bg-clip-text text-transparent;
+        }
+        .gradient-primary {
+          @apply bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 hover:from-blue-500 hover:via-indigo-500 hover:to-violet-500 text-white shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-all;
         }
       }
+      
+      /* Subtle Ambient Background Mesh */
+      body {
+        background-color: #070a12;
+      }
+      .ambient-glow {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: 0;
+        background: 
+          radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+          radial-gradient(circle at 85% 20%, rgba(147, 51, 234, 0.07) 0%, transparent 45%),
+          radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+      }
+      
+      html:not(.dark) body {
+        background-color: #f8fafc;
+      }
+      html:not(.dark) .ambient-glow {
+        background: 
+          radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
+          radial-gradient(circle at 85% 20%, rgba(147, 51, 234, 0.04) 0%, transparent 45%);
+      }
+
       ::-webkit-scrollbar {
         width: 6px;
         height: 6px;
       }
       ::-webkit-scrollbar-track {
-        @apply bg-transparent;
+        background: transparent;
       }
       ::-webkit-scrollbar-thumb {
-        @apply bg-zinc-300 dark:bg-zinc-700 rounded-full hover:bg-zinc-400 dark:hover:bg-zinc-600;
+        background: rgba(148, 163, 184, 0.25);
+        border-radius: 9999px;
       }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(148, 163, 184, 0.45);
+      }
+
+      @keyframes pulse-gentle {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.85; transform: scale(1.02); }
+      }
+      .pulse-glow {
+        animation: pulse-gentle 3s ease-in-out infinite;
+      }
+
       @media print {
-        header, aside, #btn-run, #staged-container, .grid-cols-2 {
+        header, aside, #btn-run, #staged-container, #actions-bar, .no-print, #api-key-banner {
           display: none !important;
         }
         main {
@@ -81,83 +138,185 @@
       }
     </style>
   </head>
-  <body class="min-h-screen flex flex-col bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 font-sans transition-colors duration-200">
+  <body class="min-h-screen flex flex-col font-sans text-slate-800 dark:text-slate-100 transition-colors duration-200 selection:bg-brand-500 selection:text-white relative">
     
-    <!-- 1. Header Bar -->
-    <header className="sticky top-0 z-40 border-b border-zinc-200/60 dark:border-zinc-800/80 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md px-6 py-4 flex items-center justify-between">
-      <div class="max-w-7xl w-full mx-auto px-6 py-4 flex items-center justify-between border-b border-zinc-200/60 dark:border-zinc-800/80 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md">
+    <!-- Ambient Lighting Backdrop -->
+    <div class="ambient-glow"></div>
+
+    <!-- 1. Header Navigation Bar -->
+    <header class="sticky top-0 z-40 w-full border-b border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl transition-all">
+      <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+        
+        <!-- Brand Title & Tagline -->
         <div class="flex items-center gap-3">
-          <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-600 text-white text-xl font-bold shadow-md shadow-blue-500/25">
-            🎯
+          <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 text-white shadow-lg shadow-blue-500/25">
+            <i data-lucide="sparkles" class="w-5 h-5 animate-pulse"></i>
+            <span class="absolute -top-1 -right-1 flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+            </span>
           </div>
           <div>
-            <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
-              AI Resume Checker
-            </h1>
+            <div class="flex items-center gap-2">
+              <h1 class="text-lg font-display font-extrabold tracking-tight gradient-text">
+                ResumeScreen AI
+              </h1>
+              <span class="px-2 py-0.5 text-[10px] font-bold font-mono uppercase rounded-full bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border border-indigo-500/20">
+                PRO 2.5
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block">
+              Intelligent ATS Candidate Evaluation & Gap Analysis Engine
+            </p>
           </div>
         </div>
         
-        <div class="flex items-center gap-3">
+        <!-- Header Controls -->
+        <div class="flex items-center gap-2.5 sm:gap-3.5">
+          
+          <!-- API Key Status Button (Opens Key Modal) -->
+          <button 
+            id="btn-open-key-modal"
+            class="flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer shadow-sm"
+            title="Configure Google Gemini API Key"
+          >
+            <i data-lucide="key" class="w-3.5 h-3.5"></i>
+            <span id="key-btn-text">API Key</span>
+            <span id="key-status-dot" class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+          </button>
+
+          <!-- AI Model Selector Pill -->
+          <div class="relative hidden md:flex items-center">
+            <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-850/70 text-xs font-medium">
+              <i data-lucide="cpu" class="w-3.5 h-3.5 text-blue-500"></i>
+              <select 
+                id="model-select"
+                class="bg-transparent text-xs font-semibold text-slate-700 dark:text-slate-200 outline-none cursor-pointer pr-1"
+              >
+                <option value="gemini-2.5-flash">Gemini 2.5 Flash (Recommended)</option>
+                <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash-Lite</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Light / Dark Theme Switcher -->
           <button 
             id="theme-toggle"
-            class="flex items-center justify-center w-10 h-10 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95"
-            title="Toggle Theme"
+            class="flex items-center justify-center w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-850/80 shadow-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-95 cursor-pointer"
+            title="Toggle Light/Dark Theme"
           >
-            <i data-lucide="sun" class="hidden dark:block" size="18"></i>
-            <i data-lucide="moon" class="block dark:hidden" size="18"></i>
+            <i data-lucide="sun" class="hidden dark:block w-4 h-4 text-amber-400"></i>
+            <i data-lucide="moon" class="block dark:hidden w-4 h-4 text-indigo-500"></i>
           </button>
         </div>
+
       </div>
     </header>
 
-    <!-- 2. Content Layout Grid -->
-    <div class="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Global API Key Missing Warning Banner (If Not Configured) -->
+    <div id="api-key-banner" class="w-full bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 border-b border-amber-500/30 px-4 py-2.5 transition-all hidden">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-2 text-amber-600 dark:text-amber-300 font-medium">
+          <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0 text-amber-500"></i>
+          <span>
+            <strong>Gemini API Key Required:</strong> To evaluate candidates with AI, please configure your free Google Gemini API key.
+          </span>
+        </div>
+        <button 
+          onclick="openKeyModal()" 
+          class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg shadow-sm text-xs transition-all flex items-center gap-1.5 cursor-pointer flex-shrink-0"
+        >
+          <i data-lucide="key" class="w-3 h-3"></i> Add Key Now
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. Main Workspace Layout Grid -->
+    <div class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
       
-      <!-- SIDEBAR COLUMNS -->
-      <aside class="lg:col-span-4 flex flex-col gap-6">
+      <!-- SIDEBAR CONTROLS (Column span: 4) -->
+      <aside class="lg:col-span-4 flex flex-col gap-5">
         
-        <!-- Settings Section -->
-        <div class="glass-card rounded-2xl p-5 flex flex-col gap-4">
-          <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
-            <i data-lucide="settings" class="text-blue-500 w-4 h-4"></i> Match Settings
-          </h2>
+        <!-- Match Evaluation Thresholds Card -->
+        <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4 border-l-4 border-l-brand-500">
+          <div class="flex items-center justify-between">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+              <i data-lucide="sliders" class="text-brand-500 w-4 h-4"></i> Match Thresholds
+            </h2>
+            <span class="text-[11px] text-slate-400 font-mono">Passing Standard</span>
+          </div>
 
-          <!-- Hidden Select to prevent JS error -->
-          <select id="model-select" class="hidden">
-            <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash-Lite</option>
-          </select>
-
-          <div class="grid grid-cols-2 gap-3 mt-1">
+          <!-- Threshold Sliders -->
+          <div class="flex flex-col gap-4 pt-1">
+            <!-- High Match Slider -->
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-semibold text-zinc-500 dark:text-zinc-400">High Match</label>
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-semibold text-emerald-500 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span> High Match (Elite)
+                </span>
+                <span id="high-val-display" class="font-mono font-bold text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">80%</span>
+              </div>
               <input 
                 id="high-threshold"
-                type="number"
+                type="range"
+                min="50"
+                max="95"
                 value="80"
-                class="w-full text-sm px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 outline-none focus:border-blue-500 text-center font-bold text-zinc-800 dark:text-zinc-200"
+                class="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
               />
             </div>
+
+            <!-- Medium Match Slider -->
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Medium Match</label>
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-semibold text-amber-500 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-amber-500"></span> Moderate Match
+                </span>
+                <span id="medium-val-display" class="font-mono font-bold text-xs px-2 py-0.5 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">60%</span>
+              </div>
               <input 
                 id="medium-threshold"
-                type="number"
+                type="range"
+                min="30"
+                max="80"
                 value="60"
-                class="w-full text-sm px-3 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 outline-none focus:border-blue-500 text-center font-bold text-zinc-800 dark:text-zinc-200"
+                class="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500"
               />
             </div>
           </div>
+
+          <!-- Model selector for mobile (visible only when screen is small) -->
+          <div class="md:hidden flex flex-col gap-1.5 pt-2 border-t border-slate-200/50 dark:border-slate-800/50">
+            <label class="text-xs font-semibold text-slate-400">Gemini Model</label>
+            <select 
+              id="model-select-mobile"
+              class="w-full text-xs font-medium px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-850/60 outline-none"
+            >
+              <option value="gemini-2.5-flash">Gemini 2.5 Flash (Recommended)</option>
+              <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+              <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+              <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+              <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash-Lite</option>
+            </select>
+          </div>
         </div>
 
-        <!-- Upload Resumes Section -->
-        <div class="glass-card rounded-2xl p-5 flex flex-col gap-4">
-          <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
-            <i data-lucide="upload-cloud" class="text-blue-500 w-4 h-4"></i> Upload Candidates
-          </h2>
+        <!-- Candidate Resumes Upload Box -->
+        <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4 border-l-4 border-l-indigo-500">
+          <div class="flex items-center justify-between">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+              <i data-lucide="folder-up" class="text-indigo-500 w-4 h-4"></i> Upload Resumes
+            </h2>
+            <span class="text-[11px] text-slate-400 font-mono">Max 10 files</span>
+          </div>
           
+          <!-- Drop Area -->
           <div 
             id="drop-zone"
-            class="border-2 border-dashed border-zinc-300 dark:border-zinc-800 rounded-xl p-6 flex flex-col items-center justify-center gap-2 bg-zinc-50/50 dark:bg-zinc-950/20 hover:border-blue-500 hover:bg-zinc-100/50 dark:hover:bg-zinc-900/20 transition-all cursor-pointer group"
+            class="border-2 border-dashed border-slate-300 dark:border-slate-700/80 rounded-2xl p-6 flex flex-col items-center justify-center gap-2.5 bg-slate-50/50 dark:bg-slate-900/30 hover:border-brand-500 hover:bg-brand-50/20 dark:hover:bg-brand-950/10 transition-all duration-200 cursor-pointer group text-center"
           >
             <input 
               id="file-input"
@@ -166,197 +325,706 @@
               class="hidden"
               accept=".pdf,.docx"
             />
-            <i data-lucide="upload-cloud" class="text-zinc-400 w-8 h-8 group-hover:text-blue-500 group-hover:scale-110 transition-all duration-200"></i>
-            <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 text-center">
-              Drag & drop files or <span class="text-blue-500 group-hover:underline">browse</span>
-            </span>
-            <span class="text-[10px] text-zinc-400 text-center">Supports PDF & Word (.docx) documents up to 100MB</span>
+            <div class="w-12 h-12 rounded-xl bg-brand-500/10 dark:bg-brand-500/20 flex items-center justify-center text-brand-500 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-white transition-all duration-300">
+              <i data-lucide="cloud-upload" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-200">
+                Drag & drop resumes or <span class="text-brand-500 group-hover:underline font-extrabold">browse</span>
+              </span>
+              <p class="text-[11px] text-slate-400 mt-0.5">Supports Adobe PDF (.pdf) & MS Word (.docx)</p>
+            </div>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200/60 dark:bg-slate-800 text-slate-500 dark:text-slate-400">PDF</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200/60 dark:bg-slate-800 text-slate-500 dark:text-slate-400">DOCX</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200/60 dark:bg-slate-800 text-slate-500 dark:text-slate-400">Up to 100MB</span>
+            </div>
           </div>
 
-          <div id="staged-container" class="flex flex-col gap-2 max-h-56 overflow-y-auto hidden">
-            <span class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Staged Profiles (<span id="staged-count">0</span>)</span>
+          <!-- Staged Files Container -->
+          <div id="staged-container" class="flex flex-col gap-2.5 max-h-64 overflow-y-auto hidden pt-1">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-slate-400 uppercase tracking-wider text-[11px]">
+                Staged Resumes (<span id="staged-count" class="text-brand-500">0</span>)
+              </span>
+              <button 
+                id="btn-clear-files"
+                class="text-[11px] text-rose-500 hover:text-rose-400 font-semibold cursor-pointer"
+              >
+                Clear All
+              </button>
+            </div>
             <div id="staged-list" class="flex flex-col gap-2"></div>
           </div>
         </div>
+
+        <!-- Quick Help & Tip Card -->
+        <div class="glass-subtle rounded-2xl p-4 flex items-start gap-3 text-xs text-slate-500 dark:text-slate-400">
+          <i data-lucide="lightbulb" class="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <span class="font-bold text-slate-700 dark:text-slate-300">Pro Tip:</span>
+            Upload multiple resumes at once to receive an automated <strong>Executive Recruitment Verdict</strong> with comparative candidate trade-offs.
+          </div>
+        </div>
+
       </aside>
 
-      <!-- MAIN PANEL CONTENT -->
+      <!-- MAIN WORKSPACE CONTENT (Column span: 8) -->
       <main class="lg:col-span-8 flex flex-col gap-6">
         
         <!-- Job Description Input Card -->
-        <div class="glass-card rounded-2xl p-5 flex flex-col gap-4">
-          <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
-            <i data-lucide="briefcase" class="text-blue-500 w-4 h-4"></i> JOB DESCRIPTION
-          </h2>
-          <textarea 
-            id="jd-input"
-            class="w-full text-sm px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all font-sans h-44 resize-none"
-            placeholder="Enter job description here... 📝"
-          ></textarea>
+        <div class="glass-panel rounded-2xl p-5 sm:p-6 flex flex-col gap-4">
           
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+              <i data-lucide="briefcase" class="text-brand-500 w-4 h-4"></i> Target Job Description
+            </h2>
+
+            <!-- Quick Template Presets -->
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="text-[11px] text-slate-400 font-medium mr-1 hidden sm:inline">Quick Presets:</span>
+              <button onclick="loadSampleJD('ml')" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 border border-blue-500/20 transition-all cursor-pointer">
+                🤖 ML Engineer
+              </button>
+              <button onclick="loadSampleJD('fullstack')" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-purple-500/10 hover:bg-purple-500/20 text-purple-500 border border-purple-500/20 transition-all cursor-pointer">
+                💻 Full-Stack Dev
+              </button>
+              <button onclick="loadSampleJD('devops')" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 border border-emerald-500/20 transition-all cursor-pointer">
+                ☁️ DevOps
+              </button>
+            </div>
+          </div>
+
+          <div class="relative">
+            <textarea 
+              id="jd-input"
+              class="w-full text-sm px-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-950/60 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all font-sans h-44 resize-y leading-relaxed"
+              placeholder="Paste the target Job Description here (Role summary, required skills, responsibilities, years of experience)..."
+            ></textarea>
+            
+            <!-- Character & Word Count Counter -->
+            <div class="absolute bottom-2.5 right-3 flex items-center gap-3 text-[11px] text-slate-400 font-mono bg-white/80 dark:bg-slate-900/80 px-2 py-0.5 rounded-md backdrop-blur-sm pointer-events-none">
+              <span id="jd-words">0 words</span>
+              <span id="jd-chars">0 chars</span>
+            </div>
+          </div>
+          
+          <!-- Run Action Button -->
+          <div class="flex items-center gap-3 pt-1">
+            <button 
+              id="btn-run"
+              class="flex-1 py-3.5 px-6 rounded-xl font-display font-bold text-sm flex items-center justify-center gap-2 gradient-primary cursor-pointer active:scale-[0.99]"
+            >
+              <i data-lucide="sparkles" class="w-4 h-4"></i> 
+              <span>EVALUATE & SCREEN CANDIDATES</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+            </button>
+            <button 
+              id="btn-clear-jd"
+              class="px-3.5 py-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-all text-xs font-semibold cursor-pointer"
+              title="Clear text"
+            >
+              <i data-lucide="eraser" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dynamic Loading State Card -->
+        <div id="loading-card" class="glass-panel rounded-2xl p-8 flex flex-col items-center justify-center gap-5 hidden relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-indigo-500/10 to-purple-500/5 animate-pulse"></div>
+          
+          <!-- Spinner Orb -->
+          <div class="relative w-16 h-16 flex items-center justify-center">
+            <div class="absolute w-full h-full rounded-full border-4 border-indigo-500/20 border-t-brand-500 animate-spin"></div>
+            <i data-lucide="bot" class="w-7 h-7 text-brand-500 animate-bounce"></i>
+          </div>
+
+          <div class="w-full max-w-md flex flex-col items-center gap-2 relative z-10">
+            <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-3 overflow-hidden shadow-inner p-0.5">
+              <div id="progress-bar" class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 h-full rounded-full transition-all duration-500 w-[15%]"></div>
+            </div>
+            <div class="flex items-center justify-between w-full text-xs font-mono text-slate-400 mt-1">
+              <span id="loading-msg" class="font-sans font-medium text-slate-600 dark:text-slate-300">Extracting resume text...</span>
+              <span id="progress-pct" class="font-bold text-brand-500">15%</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-6 text-[11px] text-slate-400 font-medium">
+            <span class="flex items-center gap-1.5"><i data-lucide="file-check" class="w-3.5 h-3.5 text-emerald-500"></i> PDF/Word Parsed</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="brain" class="w-3.5 h-3.5 text-indigo-500"></i> Gemini AI Analysis</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="bar-chart-3" class="w-3.5 h-3.5 text-blue-500"></i> Score Breakdown</span>
+          </div>
+        </div>
+
+        <!-- Error Card -->
+        <div id="error-card" class="p-5 rounded-2xl border border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300 flex items-start justify-between gap-4 hidden">
+          <div class="flex items-start gap-3">
+            <i data-lucide="alert-triangle" class="w-5 h-5 text-rose-500 flex-shrink-0 mt-0.5"></i>
+            <div class="flex flex-col gap-1">
+              <span class="text-sm font-bold font-display">Evaluation Run Failed</span>
+              <span id="error-msg" class="text-xs leading-relaxed opacity-95">An error occurred</span>
+            </div>
+          </div>
           <button 
-            id="btn-run"
-            class="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 hover:shadow-blue-500/25 transition-all text-white border border-blue-500 bg-blue-600 hover:bg-blue-500 active:scale-95 cursor-pointer"
+            id="error-action-btn"
+            class="hidden px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold transition-all flex-shrink-0 cursor-pointer"
           >
-            <i data-lucide="play" class="w-4 h-4" fill="white"></i> CHECK RESUME
+            Configure API Key
           </button>
-        </div>
-
-        <!-- Loading State Card -->
-        <div id="loading-card" class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center gap-4 hidden animate-pulse">
-          <i data-lucide="activity" class="text-blue-500 animate-spin w-8 h-8"></i>
-          <div class="w-full max-w-sm bg-zinc-200 dark:bg-zinc-800 rounded-full h-2.5 overflow-hidden">
-            <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300 w-[10%]"></div>
-          </div>
-          <span id="loading-msg" class="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Extracting candidate profiles...</span>
-        </div>
-
-        <!-- Error Panel -->
-        <div id="error-card" class="p-4 rounded-xl border border-rose-500/20 bg-rose-500/10 text-rose-700 dark:text-rose-400 flex items-start gap-3 hidden">
-          <i data-lucide="alert-triangle" class="flex-shrink-0 mt-0.5 w-5 h-5"></i>
-          <div class="flex flex-col gap-1">
-            <span class="text-sm font-bold">Check Resume Failed</span>
-            <span id="error-msg" class="text-xs opacity-90">An error occurred</span>
-          </div>
         </div>
 
         <!-- RESULTS REGION -->
         <div id="results-region" class="flex flex-col gap-6 hidden">
           
-          <!-- Caching Indicator -->
-          <div id="cache-indicator" class="p-3 rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center gap-2 text-xs font-semibold hidden">
-            <i data-lucide="layers" class="w-4 h-4"></i> Performance Note: Loaded screening details from evaluation cache.
+          <!-- Performance Caching Banner -->
+          <div id="cache-indicator" class="p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-300 flex items-center justify-between text-xs font-semibold hidden">
+            <div class="flex items-center gap-2">
+              <i data-lucide="zap" class="w-4 h-4 text-blue-500"></i>
+              <span>Loaded from Local Cache (Instant sub-millisecond retrieval)</span>
+            </div>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/20">Zero API Quota Used</span>
           </div>
 
-          <!-- 1. KPI Cards -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="glass-card rounded-2xl p-5 flex flex-col gap-1">
-              <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Profiles Screened</span>
-              <span id="kpi-count" class="text-3xl font-extrabold">0</span>
-            </div>
-            <div class="glass-card rounded-2xl p-5 flex flex-col gap-1">
-              <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Average Match</span>
-              <span id="kpi-avg" class="text-3xl font-extrabold text-blue-600 dark:text-blue-400">0%</span>
-            </div>
-            <div class="glass-card rounded-2xl p-5 flex flex-col gap-1">
-              <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Top Candidate Match</span>
-              <span id="kpi-top" class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">0%</span>
-            </div>
-          </div>
-
-          <!-- 2. Candidate Scoreboard Table -->
-          <div class="glass-card rounded-2xl p-5 flex flex-col gap-4 overflow-x-auto">
-            <h3 class="text-sm font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
-              📊 Scoreboard Rankings
-            </h3>
+          <!-- 1. Executive Verdict Banner -->
+          <div class="glass-panel rounded-2xl p-6 border-l-4 border-emerald-500 flex flex-col gap-4 relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
             
-            <table class="min-w-full text-sm text-left">
-              <thead>
-                <tr class="border-b border-zinc-200 dark:border-zinc-800 text-zinc-400 font-semibold text-xs uppercase tracking-wider">
-                  <th class="py-3 px-2">Candidate Name</th>
-                  <th class="py-3 px-2">Match Score</th>
-                  <th class="py-3 px-2">Top Strength</th>
-                  <th class="py-3 px-2">Critical Gap</th>
-                  <th class="py-3 px-2 text-center">Interview Priority</th>
-                </tr>
-              </thead>
-              <tbody id="scoreboard-body"></tbody>
-            </table>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5 text-emerald-600 dark:text-emerald-400">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                  <i data-lucide="award" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold uppercase tracking-wider font-mono">Executive Recruitment Verdict</h3>
+                  <span class="text-[11px] text-slate-400">Top Candidate Fit & Strategic Analysis</span>
+                </div>
+              </div>
+
+              <!-- Match Winner Badge -->
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold text-slate-400">Selected Champion:</span>
+                <span id="winner-name" class="text-sm sm:text-base font-extrabold text-emerald-600 dark:text-emerald-400 font-display"></span>
+              </div>
+            </div>
+
+            <!-- Justification Block -->
+            <div class="p-4 rounded-xl bg-slate-100/60 dark:bg-slate-800/40 border border-slate-200/50 dark:border-slate-700/40">
+              <p id="winner-justification" class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-normal"></p>
+            </div>
+
+            <!-- Strategic Trade-offs Pills -->
+            <div id="trade-offs-container" class="flex flex-col gap-2 pt-2 border-t border-slate-200/60 dark:border-slate-800/60">
+              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">Strategic Trade-offs & Comparisons</span>
+              <div id="trade-offs-list" class="flex flex-col gap-2"></div>
+            </div>
           </div>
 
-          <!-- 3. Export Actions -->
-          <div class="grid grid-cols-2 gap-4">
+          <!-- 2. High-Impact KPI Cards -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            
+            <!-- Screened Count -->
+            <div class="glass-panel rounded-2xl p-4 flex flex-col gap-1.5 relative overflow-hidden">
+              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono">Screened</span>
+              <div class="flex items-baseline gap-1">
+                <span id="kpi-count" class="text-2xl sm:text-3xl font-extrabold font-display">0</span>
+                <span class="text-xs text-slate-400">resumes</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-800 h-1 rounded-full mt-1">
+                <div class="bg-blue-500 h-1 rounded-full w-full"></div>
+              </div>
+            </div>
+
+            <!-- Top Match -->
+            <div class="glass-panel rounded-2xl p-4 flex flex-col gap-1.5 relative overflow-hidden">
+              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono">Top Match</span>
+              <div class="flex items-baseline gap-1">
+                <span id="kpi-top" class="text-2xl sm:text-3xl font-extrabold font-display text-emerald-500">0%</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-800 h-1 rounded-full mt-1">
+                <div id="kpi-top-bar" class="bg-emerald-500 h-1 rounded-full w-[0%]"></div>
+              </div>
+            </div>
+
+            <!-- Average Match -->
+            <div class="glass-panel rounded-2xl p-4 flex flex-col gap-1.5 relative overflow-hidden">
+              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono">Average Fit</span>
+              <div class="flex items-baseline gap-1">
+                <span id="kpi-avg" class="text-2xl sm:text-3xl font-extrabold font-display text-brand-500">0%</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-800 h-1 rounded-full mt-1">
+                <div id="kpi-avg-bar" class="bg-brand-500 h-1 rounded-full w-[0%]"></div>
+              </div>
+            </div>
+
+            <!-- Qualified Candidates -->
+            <div class="glass-panel rounded-2xl p-4 flex flex-col gap-1.5 relative overflow-hidden">
+              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono">Qualified</span>
+              <div class="flex items-baseline gap-1">
+                <span id="kpi-qualified" class="text-2xl sm:text-3xl font-extrabold font-display text-purple-500">0</span>
+                <span class="text-xs text-slate-400">profiles</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-800 h-1 rounded-full mt-1">
+                <div id="kpi-qual-bar" class="bg-purple-500 h-1 rounded-full w-[0%]"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 3. Candidate Scoreboard Rankings Table -->
+          <div class="glass-panel rounded-2xl p-5 sm:p-6 flex flex-col gap-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono flex items-center gap-2">
+                  <i data-lucide="trophy" class="w-4 h-4 text-amber-500"></i> Candidate Scoreboard
+                </h3>
+                <span class="text-[11px] text-slate-400">Ranked by ATS algorithmic match score</span>
+              </div>
+
+              <!-- Table Filter Buttons -->
+              <div class="flex items-center gap-1.5">
+                <button onclick="filterTable('all')" id="filter-all" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-brand-500 text-white transition-all cursor-pointer">
+                  All
+                </button>
+                <button onclick="filterTable('high')" id="filter-high" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-emerald-500 transition-all cursor-pointer">
+                  High Fit
+                </button>
+                <button onclick="filterTable('med')" id="filter-med" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-500 transition-all cursor-pointer">
+                  Moderate
+                </button>
+              </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-sm text-left">
+                <thead>
+                  <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-400 font-bold text-xs uppercase font-mono tracking-wider">
+                    <th class="py-3 px-3">Rank & Candidate</th>
+                    <th class="py-3 px-3">Match Score</th>
+                    <th class="py-3 px-3">Top Strength</th>
+                    <th class="py-3 px-3">Key Gap</th>
+                    <th class="py-3 px-3 text-right">Details</th>
+                  </tr>
+                </thead>
+                <tbody id="scoreboard-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 4. Export Actions Toolbar -->
+          <div id="actions-bar" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <button 
               id="btn-download-docx"
-              class="py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm font-bold flex items-center justify-center gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 shadow-sm cursor-pointer"
+              class="py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 text-xs font-bold flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-95 shadow-sm cursor-pointer"
             >
-              <i data-lucide="file-down" class="w-4 h-4"></i> Export Styled Word Doc (.docx)
+              <i data-lucide="file-text" class="w-4 h-4 text-blue-500"></i> Export Word Report (.docx)
             </button>
             <button 
               id="btn-download-pdf"
-              class="py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm font-bold flex items-center justify-center gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all active:scale-95 shadow-sm cursor-pointer"
+              class="py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 text-xs font-bold flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-95 shadow-sm cursor-pointer"
             >
-              <i data-lucide="printer" class="w-4 h-4"></i> Export Report as PDF (.pdf)
+              <i data-lucide="printer" class="w-4 h-4 text-indigo-500"></i> Print / Save as PDF
             </button>
-          </div>
-
-          <!-- 4. Comparative Executive Verdict -->
-          <div class="glass-card rounded-2xl p-5 border-l-4 border-emerald-500 flex flex-col gap-4">
-            <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-              <i data-lucide="trophy" class="w-5 h-5"></i>
-              <h3 class="text-sm font-bold uppercase tracking-wider">🏆 Executive Recruitment Verdict</h3>
-            </div>
-            
-            <div class="flex flex-col gap-1">
-              <span class="text-xs text-zinc-500">Top Selected Candidate</span>
-              <span id="winner-name" class="text-lg font-bold text-emerald-600 dark:text-emerald-400">John Doe</span>
-            </div>
-
-            <div class="flex flex-col gap-1">
-              <span class="text-xs text-zinc-500">Verdict Justification</span>
-              <span id="winner-justification" class="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed"></span>
-            </div>
-
-            <div id="trade-offs-container" class="flex flex-col gap-2 pt-2 border-t border-zinc-200/50 dark:border-zinc-800/50">
-              <span class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Strategic Trade-offs</span>
-              <ul id="trade-offs-list" class="list-disc pl-5 text-xs text-zinc-600 dark:text-zinc-300 flex flex-col gap-1.5"></ul>
-            </div>
+            <button 
+              id="btn-copy-summary"
+              class="py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 text-xs font-bold flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-95 shadow-sm cursor-pointer"
+            >
+              <i data-lucide="copy" class="w-4 h-4 text-emerald-500"></i> Copy Executive Summary
+            </button>
           </div>
 
           <!-- 5. Detailed Candidate Expanders -->
           <div class="flex flex-col gap-4">
-            <h3 class="text-sm font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
-              👤 Candidate-Specific Detailed Profiles
-            </h3>
+            <div class="flex items-center justify-between">
+              <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono flex items-center gap-2">
+                <i data-lucide="user-check" class="text-brand-500 w-4 h-4"></i> Detailed Candidate Evaluations
+              </h3>
+              <span class="text-[11px] text-slate-400">Click any candidate to expand breakdown</span>
+            </div>
             <div id="expanders-list" class="flex flex-col gap-4"></div>
           </div>
-
-
 
         </div>
 
       </main>
     </div>
 
-    <!-- CORE VANILLA JS STATE CONTROLLER -->
+    <!-- 3. API Key Settings Modal -->
+    <div id="api-key-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md hidden transition-all">
+      <div class="glass-panel w-full max-w-lg rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-200 dark:border-slate-700 flex flex-col gap-5 relative">
+        
+        <!-- Modal Close Button -->
+        <button 
+          onclick="closeKeyModal()"
+          class="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer"
+        >
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Modal Header -->
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-blue-500/25">
+            <i data-lucide="key" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold font-display text-slate-800 dark:text-slate-100">
+              Google Gemini API Key
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              Configure your API key to power resume evaluation
+            </p>
+          </div>
+        </div>
+
+        <!-- Server Environment Status Indicator -->
+        <div id="env-key-status" class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 flex items-center gap-2.5 text-xs text-slate-600 dark:text-slate-300">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>
+          <span id="env-key-text">Checking environment configuration...</span>
+        </div>
+
+        <!-- Key Input Form -->
+        <div class="flex flex-col gap-2">
+          <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between">
+            <span>Custom Gemini API Key</span>
+            <span class="text-[11px] text-slate-400 font-normal">Saved in browser localStorage</span>
+          </label>
+          <div class="relative flex items-center">
+            <input 
+              id="api-key-input"
+              type="password"
+              placeholder="AIzaSy..."
+              class="w-full text-sm px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-950/70 outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 font-mono pr-11"
+            />
+            <button 
+              type="button"
+              id="btn-toggle-key-visibility"
+              class="absolute right-3 p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
+              title="Toggle Visibility"
+            >
+              <i data-lucide="eye" id="eye-icon" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Free API Key Link -->
+        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-1">
+          <a 
+            href="https://aistudio.google.com/app/apikey" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="text-brand-500 hover:underline flex items-center gap-1 font-semibold"
+          >
+            Get a free Gemini API key <i data-lucide="external-link" class="w-3 h-3"></i>
+          </a>
+          <span>Free tier includes fast generation</span>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end gap-3 pt-2 border-t border-slate-200 dark:border-slate-800">
+          <button 
+            type="button"
+            onclick="clearApiKey()" 
+            class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-rose-500 hover:bg-rose-500/10 transition-all cursor-pointer"
+          >
+            Clear Key
+          </button>
+          <button 
+            type="button"
+            onclick="saveApiKey()" 
+            class="px-5 py-2.5 rounded-xl gradient-primary text-xs font-bold cursor-pointer"
+          >
+            Save & Continue
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 4. Floating Toast Notification Banner -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- CORE VANILLA JS ENGINE -->
     <script>
       let files = [];
       let results = null;
-      let activeExpander = null;
-      let detailedMode = false;
+      let activeExpander = 0;
+      let currentFilter = 'all';
+      let hasServerEnvKey = false;
 
-      // Theme toggle initialization
-      const themeToggle = document.getElementById('theme-toggle');
-      themeToggle.addEventListener('click', () => {
-        const isDark = document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      // Sample Job Descriptions for instantaneous testing
+      const SAMPLE_JDS = {
+        ml: `Machine Learning Engineer (Computer Vision & NLP)
+Location: Remote / Hybrid
+
+We are seeking a Machine Learning Engineer to build and deploy generative AI and deep learning models. 
+Responsibilities:
+- Design, train, and fine-tune Transformer architectures (LLMs, Diffusion, BERT) for production.
+- Build scalable inference pipelines using FastAPI, PyTorch, TensorRT, and Docker.
+- Optimize model latency, throughput, and GPU utilization on AWS/GCP.
+- Implement automated evaluation metrics, data preprocessing pipelines, and vector databases (Pinecone, Qdrant).
+
+Requirements:
+- 3+ years of experience with Python, PyTorch/TensorFlow, and Hugging Face.
+- Hands-on expertise with vector search, RAG pipelines, and LLM fine-tuning (LoRA, QLoRA).
+- Solid grasp of MLOps: CI/CD, MLflow, Docker, Kubernetes.
+- Bachelor's or Master's in Computer Science or related field.`,
+
+        fullstack: `Senior Full Stack Developer (React, Python/Node, Cloud)
+Location: Remote
+
+We are looking for an exceptional Full Stack Engineer to lead front-end and back-end architecture.
+Responsibilities:
+- Build high-performance, accessible, and responsive user interfaces with React, TypeScript, and modern CSS.
+- Architect robust RESTful and GraphQL backend APIs using Python (FastAPI/Django) or Node.js.
+- Work with relational and NoSQL databases (PostgreSQL, Redis, MongoDB).
+- Integrate third-party AI APIs and build real-time collaborative features.
+
+Requirements:
+- 4+ years of professional full-stack development experience.
+- Strong proficiency in React, TypeScript, Tailwind CSS, and state management.
+- Deep experience designing scalable APIs and managing PostgreSQL schemas.
+- Familiarity with cloud platforms (AWS/GCP), Docker, and automated testing.`,
+
+        devops: `Senior DevOps & Cloud Infrastructure Engineer
+Location: Remote
+
+Join our platform team to manage high-availability cloud infrastructure and CI/CD pipelines.
+Responsibilities:
+- Architect and manage multi-region cloud environments on AWS/GCP using Terraform.
+- Maintain Kubernetes (EKS/GKE) clusters, helm charts, and ingress controllers.
+- Build resilient CI/CD workflows using GitHub Actions and GitLab CI.
+- Monitor application performance with Prometheus, Grafana, and Datadog.
+
+Requirements:
+- 4+ years of hands-on experience in DevOps and Infrastructure as Code (Terraform).
+- Strong knowledge of Docker, Kubernetes, Linux internals, and networking.
+- Experience with bash scripting, Python automation, and security best practices.`
+      };
+
+      // Initialise App State
+      document.addEventListener('DOMContentLoaded', async () => {
+        initTheme();
+        initThresholdSliders();
+        initTextareaCounters();
+        initModelSync();
+        await fetchAppConfig();
+        checkApiKeyStatus();
+        lucide.createIcons();
       });
 
-      // Load theme preference
-      if (localStorage.getItem('theme') === 'light') {
-        document.documentElement.classList.remove('dark');
+      // 1. Theme Configuration
+      function initTheme() {
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+          const isDark = document.documentElement.classList.toggle('dark');
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+          lucide.createIcons();
+        });
+
+        if (localStorage.getItem('theme') === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
       }
 
+      // 2. Fetch server config to check if env key is available
+      async function fetchAppConfig() {
+        try {
+          const res = await fetch('/api/config');
+          if (res.ok) {
+            const data = await res.json();
+            hasServerEnvKey = !!data.has_env_key;
+            updateEnvKeyDisplay();
+          }
+        } catch (e) {
+          console.warn("Could not fetch server config:", e);
+        }
+      }
 
-      // Files staging inputs
+      function updateEnvKeyDisplay() {
+        const envText = document.getElementById('env-key-text');
+        if (hasServerEnvKey) {
+          envText.innerHTML = '<span class="text-emerald-500 font-bold">Detected from Server Environment:</span> System GOOGLE_API_KEY is active. Custom key is optional.';
+        } else {
+          envText.innerHTML = '<span class="text-amber-500 font-semibold">No server environment key found.</span> Please enter your Gemini API key below.';
+        }
+        checkApiKeyStatus();
+      }
+
+      // 3. API Key Management
+      function checkApiKeyStatus() {
+        const customKey = localStorage.getItem('gemini_api_key') || '';
+        const keyBtnText = document.getElementById('key-btn-text');
+        const keyBtn = document.getElementById('btn-open-key-modal');
+        const keyDot = document.getElementById('key-status-dot');
+        const banner = document.getElementById('api-key-banner');
+        const keyInput = document.getElementById('api-key-input');
+
+        if (customKey) {
+          keyInput.value = customKey;
+        }
+
+        if (customKey.trim() || hasServerEnvKey) {
+          keyBtnText.textContent = customKey.trim() ? "Key Saved" : "Env Key Active";
+          keyDot.className = "w-2 h-2 rounded-full bg-emerald-500";
+          keyBtn.className = "flex items-center gap-2 px-3 py-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold cursor-pointer transition-all";
+          banner.classList.add('hidden');
+        } else {
+          keyBtnText.textContent = "Set API Key";
+          keyDot.className = "w-2 h-2 rounded-full bg-amber-500 animate-pulse";
+          keyBtn.className = "flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-semibold cursor-pointer transition-all animate-pulse";
+          banner.classList.remove('hidden');
+        }
+      }
+
+      function openKeyModal() {
+        const modal = document.getElementById('api-key-modal');
+        modal.classList.remove('hidden');
+        document.getElementById('api-key-input').focus();
+        lucide.createIcons();
+      }
+
+      function closeKeyModal() {
+        document.getElementById('api-key-modal').classList.add('hidden');
+      }
+
+      document.getElementById('btn-open-key-modal').addEventListener('click', openKeyModal);
+
+      function saveApiKey() {
+        const val = document.getElementById('api-key-input').value.trim();
+        if (val) {
+          localStorage.setItem('gemini_api_key', val);
+          showToast("API Key successfully stored!", "success");
+        } else {
+          localStorage.removeItem('gemini_api_key');
+          showToast("Saved without custom key.", "info");
+        }
+        checkApiKeyStatus();
+        closeKeyModal();
+      }
+
+      function clearApiKey() {
+        localStorage.removeItem('gemini_api_key');
+        document.getElementById('api-key-input').value = "";
+        checkApiKeyStatus();
+        showToast("Custom API key removed.", "info");
+      }
+
+      // Toggle API key visibility
+      const btnToggleKey = document.getElementById('btn-toggle-key-visibility');
+      btnToggleKey.addEventListener('click', () => {
+        const input = document.getElementById('api-key-input');
+        const eye = document.getElementById('eye-icon');
+        if (input.type === 'password') {
+          input.type = 'text';
+          eye.setAttribute('data-lucide', 'eye-off');
+        } else {
+          input.type = 'password';
+          eye.setAttribute('data-lucide', 'eye');
+        }
+        lucide.createIcons();
+      });
+
+      // 4. Sliders & Model synchronization
+      function initThresholdSliders() {
+        const highSlider = document.getElementById('high-threshold');
+        const medSlider = document.getElementById('medium-threshold');
+        const highVal = document.getElementById('high-val-display');
+        const medVal = document.getElementById('medium-val-display');
+
+        highSlider.addEventListener('input', () => {
+          if (parseInt(highSlider.value) <= parseInt(medSlider.value)) {
+            medSlider.value = Math.max(30, parseInt(highSlider.value) - 5);
+            medVal.textContent = medSlider.value + '%';
+          }
+          highVal.textContent = highSlider.value + '%';
+          if (results) renderResults();
+        });
+
+        medSlider.addEventListener('input', () => {
+          if (parseInt(medSlider.value) >= parseInt(highSlider.value)) {
+            highSlider.value = Math.min(95, parseInt(medSlider.value) + 5);
+            highVal.textContent = highSlider.value + '%';
+          }
+          medVal.textContent = medSlider.value + '%';
+          if (results) renderResults();
+        });
+      }
+
+      function initModelSync() {
+        const modelSelect = document.getElementById('model-select');
+        const modelSelectMobile = document.getElementById('model-select-mobile');
+
+        const savedModel = localStorage.getItem('selected_model');
+        if (savedModel) {
+          modelSelect.value = savedModel;
+          if (modelSelectMobile) modelSelectMobile.value = savedModel;
+        }
+
+        modelSelect.addEventListener('change', () => {
+          if (modelSelectMobile) modelSelectMobile.value = modelSelect.value;
+          localStorage.setItem('selected_model', modelSelect.value);
+        });
+
+        if (modelSelectMobile) {
+          modelSelectMobile.addEventListener('change', () => {
+            modelSelect.value = modelSelectMobile.value;
+            localStorage.setItem('selected_model', modelSelectMobile.value);
+          });
+        }
+      }
+
+      // 5. Job Description Textarea Helper
+      function initTextareaCounters() {
+        const jd = document.getElementById('jd-input');
+        const words = document.getElementById('jd-words');
+        const chars = document.getElementById('jd-chars');
+
+        const updateCounters = () => {
+          const text = jd.value.trim();
+          const wordCount = text ? text.split(/\s+/).length : 0;
+          words.textContent = `${wordCount} words`;
+          chars.textContent = `${jd.value.length} chars`;
+        };
+
+        jd.addEventListener('input', updateCounters);
+        document.getElementById('btn-clear-jd').addEventListener('click', () => {
+          jd.value = '';
+          updateCounters();
+          jd.focus();
+        });
+      }
+
+      function loadSampleJD(key) {
+        const text = SAMPLE_JDS[key];
+        if (text) {
+          const jd = document.getElementById('jd-input');
+          jd.value = text;
+          jd.dispatchEvent(new Event('input'));
+          showToast(`Loaded ${key.toUpperCase()} Job Description template`, "info");
+        }
+      }
+
+      // 6. Resume File Upload Management
       const dropZone = document.getElementById('drop-zone');
       const fileInput = document.getElementById('file-input');
       
       dropZone.addEventListener('click', () => fileInput.click());
       dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
-        dropZone.classList.add('border-blue-500', 'bg-zinc-100/50', 'dark:bg-zinc-900/20');
+        dropZone.classList.add('border-brand-500', 'bg-brand-50/30', 'dark:bg-brand-950/20');
       });
       dropZone.addEventListener('dragleave', () => {
-        dropZone.classList.remove('border-blue-500', 'bg-zinc-100/50', 'dark:bg-zinc-900/20');
+        dropZone.classList.remove('border-brand-500', 'bg-brand-50/30', 'dark:bg-brand-950/20');
       });
       dropZone.addEventListener('drop', (e) => {
         e.preventDefault();
-        dropZone.classList.remove('border-blue-500', 'bg-zinc-100/50', 'dark:bg-zinc-900/20');
+        dropZone.classList.remove('border-brand-500', 'bg-brand-50/30', 'dark:bg-brand-950/20');
         handleFiles(e.dataTransfer.files);
       });
       fileInput.addEventListener('change', (e) => {
         handleFiles(e.target.files);
+        fileInput.value = ''; // Reset input to allow re-selecting same file
       });
 
       function handleFiles(uploaded) {
@@ -365,18 +1033,36 @@
           return ext === 'pdf' || ext === 'docx';
         });
 
+        if (valid.length === 0) {
+          showToast("Please upload .pdf or .docx resumes only.", "error");
+          return;
+        }
+
         if (files.length + valid.length > 10) {
-          alert("Maximum of 10 resumes can be uploaded.");
+          showToast("Maximum 10 resumes can be evaluated concurrently.", "error");
           return;
         }
 
         files = [...files, ...valid];
         renderStagedFiles();
+        showToast(`Staged ${valid.length} resume(s)`, "info");
       }
 
       function removeFile(index) {
         files = files.filter((_, i) => i !== index);
         renderStagedFiles();
+      }
+
+      document.getElementById('btn-clear-files').addEventListener('click', () => {
+        files = [];
+        renderStagedFiles();
+      });
+
+      function formatFileSize(bytes) {
+        if (!bytes) return '0 KB';
+        const kb = bytes / 1024;
+        if (kb < 1024) return Math.round(kb) + ' KB';
+        return (kb / 1024).toFixed(1) + ' MB';
       }
 
       function renderStagedFiles() {
@@ -394,14 +1080,21 @@
         count.textContent = files.length;
 
         files.forEach((file, idx) => {
+          const ext = file.name.split('.').pop().toLowerCase();
+          const isPdf = ext === 'pdf';
           const row = document.createElement('div');
-          row.className = 'flex items-center justify-between p-2 rounded-lg bg-zinc-100/60 dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800/80';
+          row.className = 'flex items-center justify-between p-2.5 rounded-xl bg-white/60 dark:bg-slate-850/80 border border-slate-200/80 dark:border-slate-800/80 shadow-sm';
           row.innerHTML = `
-            <div class="flex items-center gap-2 truncate">
-              <i data-lucide="file-text" class="text-blue-500 flex-shrink-0 w-4 h-4"></i>
-              <span class="text-xs font-medium truncate">${file.name}</span>
+            <div class="flex items-center gap-2.5 min-w-0 pr-2">
+              <div class="w-7 h-7 rounded-lg ${isPdf ? 'bg-rose-500/15 text-rose-500' : 'bg-blue-500/15 text-blue-500'} flex items-center justify-center flex-shrink-0 text-[10px] font-bold font-mono">
+                ${isPdf ? 'PDF' : 'DOC'}
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="text-xs font-semibold truncate text-slate-800 dark:text-slate-200">${file.name}</span>
+                <span class="text-[10px] text-slate-400 font-mono">${formatFileSize(file.size)}</span>
+              </div>
             </div>
-            <button onclick="removeFile(${idx})" class="p-1 rounded-md text-zinc-400 hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer">
+            <button onclick="removeFile(${idx})" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer flex-shrink-0">
               <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
             </button>
           `;
@@ -411,48 +1104,67 @@
         lucide.createIcons();
       }
 
-      // Trigger Screen Evaluation
+      // 7. Screening Execution Engine
       const btnRun = document.getElementById('btn-run');
       btnRun.addEventListener('click', runScreening);
 
       async function runScreening() {
         const jd = document.getElementById('jd-input').value;
-        const apiKey = "";
+        const customApiKey = (localStorage.getItem('gemini_api_key') || '').trim();
         const model = document.getElementById('model-select').value;
         
         if (files.length === 0) {
-          showError("Please upload at least one resume profile.");
+          showError("Please upload at least one candidate resume (.pdf or .docx) to evaluate.");
           return;
         }
         if (!jd.trim()) {
-          showError("Please supply the target job specification.");
+          showError("Please provide the target Job Description to screen candidates against.");
           return;
         }
 
-        // Setup loading
+        // Check if API key is present either via custom or server env
+        if (!customApiKey && !hasServerEnvKey) {
+          showError("Google Gemini API key is missing. Please configure your API key to evaluate resumes.");
+          const errBtn = document.getElementById('error-action-btn');
+          errBtn.classList.remove('hidden');
+          errBtn.onclick = openKeyModal;
+          openKeyModal();
+          return;
+        }
+
+        // Setup loading state
         hideError();
         hideResults();
         showLoading(true);
-        updateProgress(20, "Extracting candidate profiles...");
+        updateProgress(15, "Parsing candidate resume documents...");
 
         const formData = new FormData();
         formData.append("job_description", jd);
         formData.append("model_name", model);
-        if (apiKey.trim()) {
-          formData.append("api_key", apiKey);
+        if (customApiKey) {
+          formData.append("api_key", customApiKey);
         }
         files.forEach(f => {
           formData.append("resumes", f);
         });
 
         try {
-          let pVal = 30;
+          let pVal = 20;
+          const statusMessages = [
+            "Extracting skills & experience text...",
+            "Consulting Gemini AI reasoning models...",
+            "Computing objective match scores & gap analysis...",
+            "Assembling comparative rankings & verdict..."
+          ];
+          let msgIdx = 0;
+
           const interval = setInterval(() => {
-            if (pVal < 80) {
-              pVal += 10;
-              updateProgress(pVal, "Querying Gemini API screen models...");
+            if (pVal < 88) {
+              pVal += 12;
+              msgIdx = Math.min(msgIdx + 1, statusMessages.length - 1);
+              updateProgress(pVal, statusMessages[msgIdx]);
             }
-          }, 1000);
+          }, 1100);
 
           const response = await fetch('/api/screen', {
             method: 'POST',
@@ -460,19 +1172,25 @@
           });
 
           clearInterval(interval);
-          updateProgress(90, "Assembling rankings...");
+          updateProgress(95, "Finalizing report...");
 
           const data = await response.json();
           if (!response.ok) {
-            throw new Error(data.detail || "Evaluation run failed.");
+            throw new Error(data.detail || "Candidate evaluation run failed.");
           }
 
           results = data;
           showLoading(false);
           renderResults();
+          showToast(`Successfully screened ${data.response.evaluations.length} candidate(s)!`, "success");
         } catch (err) {
           showLoading(false);
           showError(err.message);
+          if (err.message.toLowerCase().includes("api key") || err.message.toLowerCase().includes("key")) {
+            const errBtn = document.getElementById('error-action-btn');
+            errBtn.classList.remove('hidden');
+            errBtn.onclick = openKeyModal;
+          }
         }
       }
 
@@ -484,12 +1202,15 @@
 
       function updateProgress(value, msg) {
         document.getElementById('progress-bar').style.width = value + '%';
+        document.getElementById('progress-pct').textContent = value + '%';
         document.getElementById('loading-msg').textContent = msg;
       }
 
       function showError(msg) {
         document.getElementById('error-msg').textContent = msg;
         document.getElementById('error-card').classList.remove('hidden');
+        const errBtn = document.getElementById('error-action-btn');
+        errBtn.classList.add('hidden');
       }
 
       function hideError() {
@@ -501,17 +1222,18 @@
       }
 
       function getBadgeClass(score, high, med) {
-        if (score >= high) return 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400';
-        if (score >= med) return 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400';
-        return 'bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-400';
+        if (score >= high) return 'bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400';
+        if (score >= med) return 'bg-amber-500/15 border-amber-500/30 text-amber-600 dark:text-amber-400';
+        return 'bg-rose-500/15 border-rose-500/30 text-rose-600 dark:text-rose-400';
       }
 
       function getScoreText(score, high, med) {
         if (score >= high) return 'High Match';
-        if (score >= med) return 'Medium Match';
+        if (score >= med) return 'Moderate Match';
         return 'Low Match';
       }
 
+      // 8. Render Results Dashboard
       function renderResults() {
         const region = document.getElementById('results-region');
         region.classList.remove('hidden');
@@ -529,60 +1251,143 @@
         document.getElementById('kpi-count').textContent = evaluations.length;
         
         const sum = evaluations.reduce((acc, c) => acc + c.match_score, 0);
-        document.getElementById('kpi-avg').textContent = Math.round(sum / evaluations.length) + '%';
+        const avg = Math.round(sum / evaluations.length);
+        document.getElementById('kpi-avg').textContent = avg + '%';
+        document.getElementById('kpi-avg-bar').style.width = avg + '%';
         
         const top = Math.max(...evaluations.map(e => e.match_score));
         document.getElementById('kpi-top').textContent = top + '%';
+        document.getElementById('kpi-top-bar').style.width = top + '%';
 
-        // Scoreboard
+        const qualifiedCount = evaluations.filter(e => e.match_score >= med).length;
+        document.getElementById('kpi-qualified').textContent = qualifiedCount;
+        document.getElementById('kpi-qual-bar').style.width = Math.round((qualifiedCount / evaluations.length) * 100) + '%';
+
+        // Executive Verdict
+        const summary = results.response.executive_summary;
+        document.getElementById('winner-name').textContent = summary.winner_name || (evaluations[0] ? evaluations[0].candidate_name : 'N/A');
+        document.getElementById('winner-justification').textContent = summary.justification || 'Candidate presents strong alignment with core requirements.';
+
+        const tradeList = document.getElementById('trade-offs-list');
+        const tradeContainer = document.getElementById('trade-offs-container');
+        tradeList.innerHTML = '';
+        
+        if (!summary.trade_offs || summary.trade_offs.length === 0) {
+          tradeContainer.classList.add('hidden');
+        } else {
+          tradeContainer.classList.remove('hidden');
+          summary.trade_offs.forEach(to => {
+            const card = document.createElement('div');
+            card.className = 'p-2.5 rounded-xl bg-slate-100/70 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50 flex items-start gap-2.5 text-xs text-slate-700 dark:text-slate-300';
+            card.innerHTML = `
+              <i data-lucide="scale" class="w-4 h-4 text-indigo-500 flex-shrink-0 mt-0.5"></i>
+              <span>${to}</span>
+            `;
+            tradeList.appendChild(card);
+          });
+        }
+
+        // Scoreboard & Expanders
+        renderScoreboard(high, med);
+        renderExpanders(high, med);
+
+        lucide.createIcons();
+      }
+
+      function filterTable(type) {
+        currentFilter = type;
+        const high = parseInt(document.getElementById('high-threshold').value) || 80;
+        const med = parseInt(document.getElementById('medium-threshold').value) || 60;
+        
+        document.querySelectorAll('[id^="filter-"]').forEach(b => {
+          b.className = 'px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all cursor-pointer';
+        });
+        const active = document.getElementById(`filter-${type}`);
+        if (active) active.className = 'px-2.5 py-1 text-xs font-semibold rounded-lg bg-brand-500 text-white transition-all cursor-pointer';
+
+        renderScoreboard(high, med);
+      }
+
+      function renderScoreboard(high, med) {
         const body = document.getElementById('scoreboard-body');
         body.innerHTML = '';
-        evaluations.forEach((item, idx) => {
-          const rank = results.response.executive_summary.rankings.indexOf(item.candidate_name) + 1;
+        
+        const evaluations = results.response.evaluations;
+        
+        let filtered = evaluations.filter(item => {
+          if (currentFilter === 'high') return item.match_score >= high;
+          if (currentFilter === 'med') return item.match_score >= med && item.match_score < high;
+          return true;
+        });
+
+        filtered.forEach((item, idx) => {
+          const rank = results.response.executive_summary.rankings ? (results.response.executive_summary.rankings.indexOf(item.candidate_name) + 1) : (idx + 1);
+          const effectiveRank = rank > 0 ? rank : idx + 1;
+          
+          let rankBadge = `<span class="px-2 py-0.5 rounded-md bg-slate-200 dark:bg-slate-800 font-mono text-xs font-bold text-slate-600 dark:text-slate-300">#${effectiveRank}</span>`;
+          if (effectiveRank === 1) {
+            rankBadge = `<span class="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-500 border border-amber-500/30 font-mono text-xs font-bold flex items-center gap-1">🥇 #1</span>`;
+          } else if (effectiveRank === 2) {
+            rankBadge = `<span class="px-2 py-0.5 rounded-md bg-slate-300/30 dark:bg-slate-700/50 text-slate-400 font-mono text-xs font-bold">🥈 #2</span>`;
+          } else if (effectiveRank === 3) {
+            rankBadge = `<span class="px-2 py-0.5 rounded-md bg-amber-700/20 text-amber-600 dark:text-amber-400 font-mono text-xs font-bold">🥉 #3</span>`;
+          }
+
           const tr = document.createElement('tr');
-          tr.className = 'border-b border-zinc-100 dark:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/30 transition-colors';
+          tr.className = 'border-b border-slate-100 dark:border-slate-800/80 hover:bg-slate-100/40 dark:hover:bg-slate-800/30 transition-colors';
           tr.innerHTML = `
-            <td class="py-3.5 px-2 font-bold">${item.candidate_name}</td>
-            <td class="py-3.5 px-2">
-              <span class="px-2 py-1 rounded-md text-xs font-bold border ${getBadgeClass(item.match_score, high, med)}">
-                ${item.match_score}% (${getScoreText(item.match_score, high, med)})
+            <td class="py-3.5 px-3">
+              <div class="flex items-center gap-2.5">
+                ${rankBadge}
+                <div>
+                  <span class="font-bold text-slate-800 dark:text-slate-100">${item.candidate_name}</span>
+                  <p class="text-[11px] text-slate-400 font-mono">${item.target_position || 'Candidate'}</p>
+                </div>
+              </div>
+            </td>
+            <td class="py-3.5 px-3">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-bold border ${getBadgeClass(item.match_score, high, med)}">
+                  ${item.match_score}%
+                </span>
+                <span class="text-[11px] font-medium text-slate-400 hidden sm:inline">
+                  ${getScoreText(item.match_score, high, med)}
+                </span>
+              </div>
+            </td>
+            <td class="py-3.5 px-3 max-w-xs truncate text-xs text-slate-600 dark:text-slate-300 font-medium">
+              <span class="flex items-center gap-1.5 truncate">
+                <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0"></i>
+                <span class="truncate">${item.strengths[0] || 'Strong domain background'}</span>
               </span>
             </td>
-            <td class="py-3.5 px-2 text-zinc-600 dark:text-zinc-300 max-w-xs truncate">${item.strengths[0] || 'N/A'}</td>
-            <td class="py-3.5 px-2 text-zinc-600 dark:text-zinc-300 max-w-xs truncate">${item.gaps[0] || 'N/A'}</td>
-            <td class="py-3.5 px-2 text-center">
-              <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs font-bold font-mono">
-                Rank ${rank > 0 ? rank : idx + 1}
+            <td class="py-3.5 px-3 max-w-xs truncate text-xs text-slate-600 dark:text-slate-300 font-medium">
+              <span class="flex items-center gap-1.5 truncate">
+                <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-500 flex-shrink-0"></i>
+                <span class="truncate">${item.gaps[0] || 'Minor gap'}</span>
               </span>
+            </td>
+            <td class="py-3.5 px-3 text-right">
+              <button 
+                onclick="scrollToExpander(${idx})" 
+                class="px-2.5 py-1 rounded-lg bg-brand-500/10 hover:bg-brand-500 text-brand-500 hover:text-white transition-all text-xs font-bold cursor-pointer inline-flex items-center gap-1"
+              >
+                View <i data-lucide="chevron-right" class="w-3 h-3"></i>
+              </button>
             </td>
           `;
           body.appendChild(tr);
         });
 
-        // Executive Summary
-        const summary = results.response.executive_summary;
-        document.getElementById('winner-name').textContent = summary.winner_name || 'N/A';
-        document.getElementById('winner-justification').textContent = summary.justification;
-
-        const tradeList = document.getElementById('trade-offs-list');
-        const tradeContainer = document.getElementById('trade-offs-container');
-        tradeList.innerHTML = '';
-        if (summary.trade_offs.length === 0) {
-          tradeContainer.classList.add('hidden');
-        } else {
-          tradeContainer.classList.remove('hidden');
-          summary.trade_offs.forEach(to => {
-            const li = document.createElement('li');
-            li.textContent = to;
-            tradeList.appendChild(li);
-          });
-        }
-
-        // Expanders
-        renderExpanders(high, med);
-
-        
         lucide.createIcons();
+      }
+
+      function scrollToExpander(idx) {
+        toggleExpander(idx, true);
+        const el = document.getElementById(`expander-card-${idx}`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       }
 
       function renderExpanders(high, med) {
@@ -590,152 +1395,207 @@
         container.innerHTML = '';
 
         results.response.evaluations.forEach((item, idx) => {
-          const meta = results.metadata[item.candidate_name] || {};
+          const meta = (results.metadata && results.metadata[item.candidate_name]) ? results.metadata[item.candidate_name] : {};
+          const isWinner = results.response.executive_summary.winner_name === item.candidate_name;
+
           const div = document.createElement('div');
-          div.className = 'glass-card rounded-2xl overflow-hidden';
+          div.id = `expander-card-${idx}`;
+          div.className = `glass-panel rounded-2xl overflow-hidden transition-all duration-200 ${isWinner ? 'border-2 border-emerald-500/50 shadow-glow-emerald' : ''}`;
           
           div.innerHTML = `
-            <button onclick="toggleExpander(${idx})" class="w-full px-5 py-4 flex items-center justify-between bg-zinc-100/40 dark:bg-zinc-900/30 text-left outline-none border-b border-zinc-200/40 dark:border-zinc-800/40 cursor-pointer">
+            <button onclick="toggleExpander(${idx})" class="w-full px-5 py-4 flex items-center justify-between bg-slate-100/50 dark:bg-slate-850/60 text-left outline-none border-b border-slate-200/60 dark:border-slate-800/60 cursor-pointer">
               <div class="flex items-center gap-3">
-                <i data-lucide="user" class="text-blue-500 w-4 h-4"></i>
-                <span class="font-bold">${item.candidate_name}</span>
-                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold border ${getBadgeClass(item.match_score, high, med)}">
-                  Score: ${item.match_score}%
-                </span>
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr ${isWinner ? 'from-emerald-500 to-teal-600' : 'from-blue-600 to-indigo-600'} text-white flex items-center justify-center font-bold text-xs">
+                  ${item.candidate_name.charAt(0)}
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-slate-800 dark:text-slate-100 font-display">${item.candidate_name}</span>
+                    ${isWinner ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-500 border border-emerald-500/30">Winner</span>' : ''}
+                  </div>
+                  <span class="text-[11px] text-slate-400 font-mono">${item.target_position || 'Evaluated Candidate'}</span>
+                </div>
               </div>
-              <i data-lucide="chevron-down" id="chevron-${idx}" class="w-4 h-4"></i>
+              
+              <div class="flex items-center gap-3">
+                <span class="px-3 py-1 rounded-xl text-xs font-mono font-bold border ${getBadgeClass(item.match_score, high, med)}">
+                  ${item.match_score}% Match
+                </span>
+                <i data-lucide="chevron-down" id="chevron-${idx}" class="w-4 h-4 text-slate-400 transition-transform duration-200"></i>
+              </div>
             </button>
             
-            <div id="content-${idx}" class="hidden p-5 flex flex-col gap-4">
-              <div class="grid grid-cols-3 gap-2 border-b border-zinc-200/40 dark:border-zinc-800/40 pb-3 text-xs text-zinc-400">
-                <span>📄 Page Count: ${meta.page_count || 1}</span>
-                <span>📷 Scanned PDF: ${meta.is_scanned ? 'Yes 📷' : 'No 📝'}</span>
-                <span>🔍 Quality Index: ${(meta.confidence_score || 1.0).toFixed(2)}</span>
+            <div id="content-${idx}" class="${idx === 0 ? '' : 'hidden'} p-5 sm:p-6 flex flex-col gap-5">
+              
+              <!-- Document Metadata Tags -->
+              <div class="flex flex-wrap items-center gap-2.5 pb-4 border-b border-slate-200/60 dark:border-slate-800/60 text-xs text-slate-400 font-mono">
+                <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800">
+                  <i data-lucide="file-text" class="w-3.5 h-3.5 text-blue-500"></i> Pages: ${meta.page_count || 1}
+                </span>
+                <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800">
+                  <i data-lucide="camera" class="w-3.5 h-3.5 ${meta.is_scanned ? 'text-amber-500' : 'text-emerald-500'}"></i> ${meta.is_scanned ? 'Scanned PDF' : 'Digital Native PDF'}
+                </span>
+                <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800">
+                  <i data-lucide="check-check" class="w-3.5 h-3.5 text-brand-500"></i> OCR Quality: ${Math.round((meta.confidence_score || 1.0) * 100)}%
+                </span>
               </div>
 
               <!-- Navigation pill tabs -->
-              <div class="flex gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-2">
-                <button onclick="setExpanderTab(${idx}, 0)" id="tab-${idx}-0" class="tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950">
-                  📊 Overview
+              <div class="flex gap-2 border-b border-slate-200 dark:border-slate-800 pb-2.5">
+                <button onclick="setExpanderTab(${idx}, 0)" id="tab-${idx}-0" class="tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 shadow-sm cursor-pointer">
+                  📊 Overview & Analysis
                 </button>
-                <button onclick="setExpanderTab(${idx}, 1)" id="tab-${idx}-1" class="tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-transparent text-zinc-400 hover:text-zinc-600">
-                  🗣️ Interview Qs
+                <button onclick="setExpanderTab(${idx}, 1)" id="tab-${idx}-1" class="tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+                  🗣️ Interview Questions (${item.interview_questions ? item.interview_questions.length : 3})
                 </button>
-                <button onclick="setExpanderTab(${idx}, 2)" id="tab-${idx}-2" class="tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-transparent text-zinc-400 hover:text-zinc-600">
-                  🛠️ Revisions
+                <button onclick="setExpanderTab(${idx}, 2)" id="tab-${idx}-2" class="tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+                  🛠️ Resume Revisions
                 </button>
               </div>
 
-              <!-- Tab layouts -->
-              <div id="tab-content-${idx}" class="text-sm">
-                <!-- Loaded dynamically below -->
-              </div>
-
+              <!-- Tab content dynamic host -->
+              <div id="tab-content-${idx}" class="text-sm"></div>
 
             </div>
           `;
           container.appendChild(div);
-          
-          // Initialise tab content
           setExpanderTab(idx, 0);
         });
+
+        lucide.createIcons();
       }
 
-      function toggleExpander(idx) {
+      function toggleExpander(idx, forceOpen = false) {
         const panel = document.getElementById(`content-${idx}`);
         const chevron = document.getElementById(`chevron-${idx}`);
-        const show = panel.classList.contains('hidden');
-        
-        // Collapse active
-        if (activeExpander !== null && activeExpander !== idx) {
-          document.getElementById(`content-${activeExpander}`).classList.add('hidden');
-          document.getElementById(`chevron-${activeExpander}`).classList.replace('chevron-up', 'chevron-down');
-        }
+        if (!panel) return;
 
-        if (show) {
+        const isCurrentlyHidden = panel.classList.contains('hidden');
+        if (forceOpen || isCurrentlyHidden) {
           panel.classList.remove('hidden');
-          chevron.classList.replace('chevron-down', 'chevron-up');
-          activeExpander = idx;
+          if (chevron) chevron.style.transform = 'rotate(180deg)';
         } else {
           panel.classList.add('hidden');
-          chevron.classList.replace('chevron-up', 'chevron-down');
-          activeExpander = null;
+          if (chevron) chevron.style.transform = 'rotate(0deg)';
         }
-        lucide.createIcons();
       }
 
       function setExpanderTab(idx, tabIdx) {
         const evaluations = results.response.evaluations[idx];
         const tabContent = document.getElementById(`tab-content-${idx}`);
+        if (!tabContent) return;
         
-        // Toggle buttons active borders
         document.querySelectorAll(`.tab-btn-${idx}`).forEach(btn => {
-          btn.className = `tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-transparent text-zinc-400 hover:text-zinc-600 cursor-pointer`;
+          btn.className = `tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-transparent text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer`;
         });
         const activeBtn = document.getElementById(`tab-${idx}-${tabIdx}`);
-        activeBtn.className = `tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 cursor-pointer`;
+        if (activeBtn) {
+          activeBtn.className = `tab-btn-${idx} text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 shadow-sm cursor-pointer`;
+        }
 
         if (tabIdx === 0) {
           tabContent.innerHTML = `
             <div class="flex flex-col gap-4">
-              <p class="text-zinc-700 dark:text-zinc-300 italic">"${evaluations.gap_analysis}"</p>
+              <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/80">
+                <span class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider block mb-1">Gap Analysis Summary</span>
+                <p class="text-slate-700 dark:text-slate-200 leading-relaxed text-xs sm:text-sm">"${evaluations.gap_analysis}"</p>
+              </div>
+
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="flex flex-col gap-2">
-                  <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">✅ Primary Strengths</span>
-                  <ul class="list-disc pl-5 flex flex-col gap-1 text-xs">
-                    ${evaluations.strengths.map(s => `<li>${s}</li>`).join('')}
+                
+                <!-- Strengths -->
+                <div class="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20 flex flex-col gap-2.5">
+                  <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider font-mono flex items-center gap-1.5">
+                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Primary Strengths
+                  </span>
+                  <ul class="flex flex-col gap-2 text-xs text-slate-700 dark:text-slate-200">
+                    ${evaluations.strengths.map(s => `
+                      <li class="flex items-start gap-2">
+                        <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+                        <span>${s}</span>
+                      </li>
+                    `).join('')}
                   </ul>
                 </div>
-                <div class="flex flex-col gap-2">
-                  <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">⚠️ Identified Gaps</span>
-                  <ul class="list-disc pl-5 flex flex-col gap-1 text-xs">
-                    ${evaluations.gaps.map(g => `<li>${g}</li>`).join('')}
+
+                <!-- Gaps -->
+                <div class="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20 flex flex-col gap-2.5">
+                  <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider font-mono flex items-center gap-1.5">
+                    <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500"></i> Critical Gaps
+                  </span>
+                  <ul class="flex flex-col gap-2 text-xs text-slate-700 dark:text-slate-200">
+                    ${evaluations.gaps.map(g => `
+                      <li class="flex items-start gap-2">
+                        <i data-lucide="minus" class="w-3.5 h-3.5 text-amber-500 flex-shrink-0 mt-0.5"></i>
+                        <span>${g}</span>
+                      </li>
+                    `).join('')}
                   </ul>
                 </div>
+
               </div>
             </div>
           `;
         } else if (tabIdx === 1) {
           tabContent.innerHTML = `
             <div class="flex flex-col gap-3">
-              <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">🗣️ Targeted Interview Questions</span>
+              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">Tailored Technical Interview Questions</span>
               ${evaluations.interview_questions.map((q, qIdx) => `
-                <div class="p-3 rounded-lg border border-zinc-200/50 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-950">
-                  <span class="text-xs font-bold text-blue-500">Question ${qIdx + 1}:</span>
-                  <p class="text-xs text-zinc-600 dark:text-zinc-300 mt-1 font-semibold">${q}</p>
+                <div class="p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 flex items-start justify-between gap-3 group">
+                  <div class="flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-lg bg-blue-500/15 text-blue-500 flex items-center justify-center text-xs font-mono font-bold flex-shrink-0">
+                      ${qIdx + 1}
+                    </span>
+                    <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 font-medium leading-relaxed">${q}</p>
+                  </div>
+                  <button 
+                    onclick="copyText('${q.replace(/'/g, "\\'")}', 'Question copied to clipboard!')" 
+                    class="p-1.5 rounded-lg text-slate-400 hover:text-blue-500 hover:bg-blue-500/10 transition-colors cursor-pointer flex-shrink-0 opacity-80 group-hover:opacity-100"
+                    title="Copy Question"
+                  >
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  </button>
                 </div>
               `).join('')}
             </div>
           `;
         } else if (tabIdx === 2) {
           tabContent.innerHTML = `
-            <div class="flex flex-col gap-2">
-              <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">🛠️ Resume Revision Suggestions</span>
-              <ul class="list-disc pl-5 flex flex-col gap-1.5 text-xs text-zinc-700 dark:text-zinc-300">
-                ${evaluations.resume_revisions.map(r => `<li>${r}</li>`).join('')}
-              </ul>
+            <div class="flex flex-col gap-3">
+              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">Actionable Resume Revisions & Keyword Enhancements</span>
+              <div class="flex flex-col gap-2">
+                ${evaluations.resume_revisions.map(r => `
+                  <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 flex items-start gap-2.5 text-xs text-slate-700 dark:text-slate-200">
+                    <i data-lucide="wrench" class="w-4 h-4 text-indigo-500 flex-shrink-0 mt-0.5"></i>
+                    <span>${r}</span>
+                  </div>
+                `).join('')}
+              </div>
             </div>
           `;
         }
+
+        lucide.createIcons();
       }
 
-      // Download Word doc report
+      // 9. Export Reports (DOCX, PDF, Clipboard)
       document.getElementById('btn-download-docx').addEventListener('click', async () => {
         if (!results) return;
         const jd = document.getElementById('jd-input').value;
-        const title = jd.split('\n')[0] || "ATS Comparative Assessment";
+        const title = jd.split('\n')[0] || "ATS Comparative Candidate Evaluation";
         
         const formData = new FormData();
         formData.append("job_title", title);
         formData.append("screening_response_json", JSON.stringify(results.response));
 
         try {
+          showToast("Generating styled Word Document report...", "info");
           const res = await fetch('/api/export/docx', {
             method: 'POST',
             body: formData
           });
 
-          if (!res.ok) throw new Error("Export failed");
+          if (!res.ok) throw new Error("Export generation failed.");
           
           const blob = await res.blob();
           const url = window.URL.createObjectURL(blob);
@@ -745,18 +1605,62 @@
           document.body.appendChild(a);
           a.click();
           a.remove();
+          showToast("Word Document exported successfully!", "success");
         } catch (e) {
-          alert("Docx export failed: " + e.message);
+          showToast("DOCX export failed: " + e.message, "error");
         }
       });
 
-      // Trigger PDF Export/Printing
       document.getElementById('btn-download-pdf').addEventListener('click', () => {
         window.print();
       });
 
-      // Initialize icons
-      lucide.createIcons();
+      document.getElementById('btn-copy-summary').addEventListener('click', () => {
+        if (!results) return;
+        const sum = results.response.executive_summary;
+        const text = `ATS Candidate Screening Summary:\nWinner: ${sum.winner_name}\nJustification: ${sum.justification}\n\nStrategic Trade-offs:\n${sum.trade_offs.map(t => `- ${t}`).join('\n')}`;
+        copyText(text, "Executive summary copied to clipboard!");
+      });
+
+      // Utility: Copy text & Toast Notifications
+      function copyText(text, successMsg = "Copied to clipboard!") {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(successMsg, "success");
+        }).catch(() => {
+          showToast("Failed to copy text", "error");
+        });
+      }
+
+      function showToast(msg, type = "info") {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        
+        let colorClass = "bg-slate-900 text-white border-slate-700";
+        let icon = "info";
+        if (type === "success") {
+          colorClass = "bg-emerald-950 text-emerald-100 border-emerald-800";
+          icon = "check-circle-2";
+        } else if (type === "error") {
+          colorClass = "bg-rose-950 text-rose-100 border-rose-800";
+          icon = "alert-circle";
+        }
+
+        toast.className = `px-4 py-3 rounded-2xl border shadow-xl flex items-center gap-2.5 text-xs font-semibold backdrop-blur-lg pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0 ${colorClass}`;
+        toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 flex-shrink-0"></i><span>${msg}</span>`;
+        container.appendChild(toast);
+        lucide.createIcons();
+
+        // Animate in
+        requestAnimationFrame(() => {
+          toast.classList.remove('translate-y-2', 'opacity-0');
+        });
+
+        // Auto remove
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-2');
+          setTimeout(() => toast.remove(), 300);
+        }, 3200);
+      }
     </script>
   </body>
 </html>
