@@ -126,16 +126,6 @@
         
         <!-- Header Actions -->
         <div class="flex items-center gap-2.5">
-          
-          <!-- Quick Demo Staging Button -->
-          <button 
-            onclick="loadDemoSuite()" 
-            class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-zinc-800 text-xs font-medium text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors cursor-pointer"
-            title="Load sample Job Description and 3 candidates"
-          >
-            <i data-lucide="play" class="w-3.5 h-3.5 text-slate-500 dark:text-zinc-400"></i>
-            <span>Load Sample Data</span>
-          </button>
 
           <!-- API Key Status Button -->
           <button 
@@ -226,14 +216,6 @@
             </div>
             <div id="staged-list" class="flex flex-col gap-1.5"></div>
           </div>
-
-          <!-- Quick link to load sample data if empty -->
-          <div class="pt-1 border-t border-slate-100 dark:border-zinc-800/80 flex items-center justify-between text-xs">
-            <span class="text-slate-400 dark:text-zinc-500">No resumes?</span>
-            <button onclick="loadDemoSuite()" class="text-blue-600 dark:text-blue-400 font-medium hover:underline cursor-pointer">
-              Load 3 sample candidates
-            </button>
-          </div>
         </div>
 
         <!-- Evaluation Thresholds -->
@@ -288,31 +270,18 @@
         <!-- Job Description Card -->
         <div class="card rounded-xl p-5 flex flex-col gap-4">
           
-          <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center justify-between">
             <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
               Target Job Description
             </span>
-
-            <!-- Presets -->
-            <div class="flex items-center gap-1.5 flex-wrap">
-              <span class="text-[11px] text-slate-400 mr-1 hidden sm:inline">Templates:</span>
-              <button onclick="loadSampleJD('ml')" class="px-2.5 py-1 rounded-md text-xs font-medium border border-slate-200 dark:border-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-850 text-slate-600 dark:text-zinc-400 transition-colors cursor-pointer">
-                Machine Learning
-              </button>
-              <button onclick="loadSampleJD('fullstack')" class="px-2.5 py-1 rounded-md text-xs font-medium border border-slate-200 dark:border-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-850 text-slate-600 dark:text-zinc-400 transition-colors cursor-pointer">
-                Full Stack
-              </button>
-              <button onclick="loadSampleJD('devops')" class="px-2.5 py-1 rounded-md text-xs font-medium border border-slate-200 dark:border-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-850 text-slate-600 dark:text-zinc-400 transition-colors cursor-pointer">
-                DevOps
-              </button>
-            </div>
+            <span class="text-[11px] text-slate-400 font-mono">Role & Requirements</span>
           </div>
 
           <div class="relative">
             <textarea 
               id="jd-input"
               class="w-full text-xs sm:text-sm px-3.5 py-3 rounded-lg border border-slate-200 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-950/50 text-slate-900 dark:text-zinc-100 outline-none focus:border-slate-400 dark:focus:border-zinc-600 transition-colors font-sans h-44 resize-y leading-relaxed"
-              placeholder="Paste target Job Description here (Role summary, required skills, responsibilities)..."
+              placeholder="Paste target Job Description and required qualifications here..."
             ></textarea>
             
             <div class="absolute bottom-2.5 right-3 flex items-center gap-3 text-[11px] text-slate-400 font-mono pointer-events-none">
@@ -638,110 +607,6 @@
       let searchQuery = '';
       let hasServerEnvKey = false;
 
-      const SAMPLE_JDS = {
-        ml: `Senior Machine Learning Engineer (PyTorch, LLMs & MLOps)
-Location: Remote / Hybrid
-
-Responsibilities:
-- Train, evaluate, and deploy deep learning models and LLM fine-tuning pipelines.
-- Build low-latency microservices with FastAPI, PyTorch, and Docker.
-- Design Retrieval-Augmented Generation (RAG) using vector databases (Pinecone/Qdrant).
-- Optimize inference throughput and model quantization on GPU clusters.
-
-Requirements:
-- 4+ years of professional experience in Python, PyTorch, and FastAPI.
-- Hands-on expertise with vector search, embeddings, and Transformer architectures.
-- Experience with Docker, Kubernetes, and automated CI/CD pipelines.`,
-
-        fullstack: `Full Stack Engineer (React, Python FastAPI, Cloud)
-Location: Remote
-
-Responsibilities:
-- Build accessible, responsive web interfaces with React, TypeScript, and Tailwind CSS.
-- Architect backend REST APIs in Python (FastAPI) with PostgreSQL.
-- Integrate AI services and data visualization dashboards.
-
-Requirements:
-- 4+ years of full-stack engineering experience.
-- Strong proficiency in React, TypeScript, and modern state management.
-- Solid experience with relational databases and Docker.`,
-
-        devops: `Senior Cloud & DevOps Engineer
-Location: Remote
-
-Responsibilities:
-- Architect and manage multi-region cloud infrastructure using Terraform on AWS/GCP.
-- Maintain Kubernetes (EKS/GKE) clusters, Helm charts, and CI/CD automation.
-- Monitor reliability and performance via Prometheus and Grafana.
-
-Requirements:
-- 4+ years of experience in DevOps and Infrastructure as Code.
-- Strong knowledge of Docker, Kubernetes, Linux systems, and Bash/Python scripting.`
-      };
-
-      const SAMPLE_CANDIDATES = [
-        {
-          name: "Alex_Chen_Staff_ML_Engineer.txt",
-          content: `ALEX CHEN
-San Francisco, CA | alex.chen@example.com
-
-SUMMARY
-Senior Machine Learning Engineer with 5 years of production experience building NLP systems, Retrieval-Augmented Generation (RAG) pipelines, and deploying Transformer models. Proficient in Python, PyTorch, FastAPI, Docker, and Kubernetes on AWS.
-
-EXPERIENCE
-Staff ML Engineer | NeuralScale AI (2022 - Present)
-- Architected enterprise RAG inference pipeline handling 4.5M queries/day using Pinecone and LangChain.
-- Fine-tuned open-weights models (Llama 3, Mistral) with QLoRA and TensorRT-LLM, achieving 94.2% accuracy.
-- Containerized microservices using Docker, FastAPI, and Kubernetes on AWS EKS.
-
-Machine Learning Engineer | Apex Data Labs (2019 - 2022)
-- Built BERT-based text classification systems in PyTorch.
-- Automated CI/CD model training workflows using MLflow and GitHub Actions.
-
-SKILLS: Python, PyTorch, Hugging Face, FastAPI, Docker, Kubernetes, AWS, Pinecone, Redis`
-        },
-        {
-          name: "Sarah_Lin_FullStack_Engineer.txt",
-          content: `SARAH LIN
-Seattle, WA | sarah.lin@example.com
-
-SUMMARY
-Full Stack Engineer with 4 years of experience building web applications with React, TypeScript, Python (FastAPI), and PostgreSQL.
-
-EXPERIENCE
-Senior Full Stack Engineer | Veloce Systems (2022 - Present)
-- Engineered responsive analytics dashboard with React and Tailwind CSS for 120,000 active users.
-- Built scalable FastAPI backend with PostgreSQL and Redis caching, maintaining 99.95% uptime.
-- Integrated AI summarization APIs into user workflow.
-
-Software Engineer | CloudBridge Software (2020 - 2022)
-- Developed responsive SPAs with React, TypeScript, and Redux.
-- Wrote unit and integration test suites achieving 88% coverage with PyTest.
-
-SKILLS: React, TypeScript, Python, FastAPI, PostgreSQL, Docker, Redis, AWS`
-        },
-        {
-          name: "Marcus_Vance_Cloud_Platform.txt",
-          content: `MARCUS VANCE
-Austin, TX | marcus.vance@example.com
-
-SUMMARY
-DevOps & Cloud Engineer with 6 years of experience managing infrastructure on AWS and GCP. Expert in Terraform, Kubernetes, Linux, and CI/CD pipelines.
-
-EXPERIENCE
-Lead Platform Engineer | Horizon Cloud (2021 - Present)
-- Designed multi-region Kubernetes (EKS) infrastructure handling 250M monthly requests using Terraform.
-- Automated spot instance provisioning, cutting cloud infrastructure spend by 31%.
-- Implemented Prometheus and Grafana observability dashboards.
-
-DevOps Engineer | BlueSky Tech (2018 - 2021)
-- Managed GitOps CI/CD delivery pipelines using GitHub Actions.
-- Authored Python and Bash automation scripts for configuration drift detection.
-
-SKILLS: AWS, GCP, Kubernetes, Docker, Terraform, Prometheus, Grafana, Python, Bash`
-        }
-      ];
-
       document.addEventListener('DOMContentLoaded', async () => {
         initTheme();
         initThresholdSliders();
@@ -922,25 +787,6 @@ SKILLS: AWS, GCP, Kubernetes, Docker, Terraform, Prometheus, Grafana, Python, Ba
             runScreening();
           }
         });
-      }
-
-      function loadSampleJD(key) {
-        const text = SAMPLE_JDS[key];
-        if (text) {
-          const jd = document.getElementById('jd-input');
-          jd.value = text;
-          jd.dispatchEvent(new Event('input'));
-          showToast(`Loaded ${key.toUpperCase()} job description`, "info");
-        }
-      }
-
-      function loadDemoSuite() {
-        loadSampleJD('ml');
-        files = SAMPLE_CANDIDATES.map(cand => {
-          return new File([cand.content], cand.name, { type: 'text/plain' });
-        });
-        renderStagedFiles();
-        showToast("Loaded 3 sample candidates and job description", "success");
       }
 
       const dropZone = document.getElementById('drop-zone');

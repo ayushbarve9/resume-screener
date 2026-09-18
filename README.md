@@ -36,9 +36,6 @@ Traditional applicant tracking systems rely on brittle keyword counts that rejec
 ### ⚖️ Side-by-Side Candidate Comparison Modal
 - Select any two candidates from your applicant pool to contrast their match scores, delta differences, strengths, and development areas side-by-side.
 
-### ✨ 1-Click Instant Demo Suite
-- Pre-packaged with realistic candidate profiles (*Staff ML Engineer*, *Full Stack AI Lead*, *Cloud DevOps Architect*) and real-world Job Descriptions so you can test the platform instantly with zero manual file hunting.
-
 ### 🎙️ Interactive Recruiter Interview Kit
 - **Tailored Interview Questions**: Exactly 3 deep technical questions designed to test and verify the candidate's specific qualification gaps.
 - **Text-to-Speech (TTS) Audio Preview**: Built-in speech synthesis allows hiring managers to listen to interview prompts aloud.
@@ -98,7 +95,7 @@ flowchart TD
 
 ### 1. Prerequisites
 - **Python 3.10** or higher
-- (Optional) **Google Gemini API Key**: [Get a free API key from Google AI Studio](https://aistudio.google.com/app/apikey). *Note: The application also includes an offline demo engine if you do not have an API key.*
+- **Google Gemini API Key**: [Get a free API key from Google AI Studio](https://aistudio.google.com/app/apikey) to evaluate candidates using Gemini AI reasoning models.
 
 ### 2. Clone the Repository
 ```bash
